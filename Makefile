@@ -5,14 +5,14 @@ ODIR := obj/
 IDIR := inc/
 MLXDIR :=
 MLXNAME :=
-LIBFT := ../libft/
+LIBFT := libft/
+GNL := get_next_line/
 SRCS := main.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 INCS = -I$(IDIR) -I$(MLXDIR)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
-LDFLAGS := -L$(MLXDIR) -lmlx
-# LDFLAGS := -L$(MLXDIR) -lmlx -L$(LIBFT) -lft
+LDFLAGS := -L$(MLXDIR) -lmlx -L$(LIBFT) -lft -L$(GNL) -lgnl
 CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS)
 CC := cc
 MKDIR := mkdir -p
@@ -56,6 +56,7 @@ mlx_check:
 	fi
 
 $(NAME): $(OBJS) | $(ODIR)
+	@make -C $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
 
 $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
@@ -66,9 +67,11 @@ $(ODIR):
 	$(MKDIR) $@
 
 clean:
+	@make $@ -C $(GNL)
 	rm -rf $(ODIR)
 
 fclean: clean
+	@make $@ -C $(LIBFT)
 	rm -f $(NAME)
 	rm -rf $(NAME).dSYM
 
