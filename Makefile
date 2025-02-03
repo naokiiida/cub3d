@@ -1,15 +1,20 @@
-NAME :=
+NAME := cub3d
 
 SDIR := src/
 ODIR := obj/
-IDIR := inc
-SRCS := main.c 
+IDIR := inc/
+MLXDIR :=
+MLXNAME :=
+LIBFT := ../libft/
+SRCS := main.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
-INCS = -I$(IDIR)
+INCS = -I$(IDIR) -I$(MLXDIR)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
-LDFLAGS := -l
+LDFLAGS := -L$(MLXDIR) -lmlx
+# LDFLAGS := -L$(MLXDIR) -lmlx -L$(LIBFT) -lft
 CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS)
+OPTIM := -03 -march=native -ffast-math -flto
 CC := cc
 MKDIR := mkdir -p
 OS = $(shell uname)
@@ -23,16 +28,31 @@ endif
 ifdef WITH_NDEF
 	CFLAGS += -fsanitize=undefined -g3 -O0
 endif
+
 ifeq ($(OS), Linux)
-	LDFLAGS +=
+	MLXDIR := minilibx-linux/
+	MLXNAME := libmlx.a
+	LDFLAGS += -lXext -lX11 -lm
 	CFLAGS += -D__Linux__
 endif
 ifeq ($(OS), Darwin)
-	LDFLAGS +=
+	MLXDIR := minilibx_mms_20200219/
+	MLXNAME := libmlx.dylib
+	LDFLAGS += -lmlx
+	# LDFLAGS += -framework OpenGL -framework AppKit
 	CFLAGS += -D__Apple__
 endif
+ifeq DEPLOY
+	CFLAGS += $(OPTIM)
+endif
 
-all: $(NAME)
+all: mlx_check $(NAME)
+
+mlx_check:
+	@if [ ! -d "$(MLXDIR)" ]; then \
+		echo "Error: $(MLXDIR) not found"; \
+		exit 1; \
+	fi
 
 $(NAME): $(OBJS) | $(ODIR)
 	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
