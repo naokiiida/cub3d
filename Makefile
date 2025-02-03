@@ -14,7 +14,6 @@ DEPFLAGS := -MMD -MP
 LDFLAGS := -L$(MLXDIR) -lmlx
 # LDFLAGS := -L$(MLXDIR) -lmlx -L$(LIBFT) -lft
 CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS)
-OPTIM := -03 -march=native -ffast-math -flto
 CC := cc
 MKDIR := mkdir -p
 OS = $(shell uname)
@@ -27,6 +26,9 @@ ifdef WITH_ASAN
 endif
 ifdef WITH_NDEF
 	CFLAGS += -fsanitize=undefined -g3 -O0
+endif
+ifdef WITH_OPTIMIZATION
+	CFLAGS += -03 -march=native -ffast-math -flto
 endif
 
 ifeq ($(OS), Linux)
@@ -42,11 +44,10 @@ ifeq ($(OS), Darwin)
 	# LDFLAGS += -framework OpenGL -framework AppKit
 	CFLAGS += -D__Apple__
 endif
-ifeq DEPLOY
-	CFLAGS += $(OPTIM)
-endif
 
-all: mlx_check $(NAME)
+dev: mlx_check san
+
+all: $(NAME)
 
 mlx_check:
 	@if [ ! -d "$(MLXDIR)" ]; then \
@@ -88,13 +89,16 @@ deps:
 	nm -u $(NAME)
 
 l: fclean
-	@make WITH_LEAKS=1
+	@make all WITH_LEAKS=1
 
 san: fclean
-	@make WITH_ASAN=1 WITH_NDEF=1
+	@make all WITH_ASAN=1 WITH_NDEF=1
 
 v: all
 	valgrind --leak-check=full --trace-children=yes ./$(NAME)
+
+build: fclean
+	@make all WITH_OPTIMIZATION=1
 
 -include $(DEPS)
 
