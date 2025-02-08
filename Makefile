@@ -19,7 +19,7 @@ endif
 
 LIBFT := libft/
 GNL := get_next_line/
-SRCS := main.c ft_mouse_hook.c ft_key_hook.c ft_common.c ft_calc_fractal.c ft_scroll.c ft_strncmp.c ft_atof.c ft_itoa.c ft_close.c ft_input.c ft_strjoin.c ft_strdup.c
+SRCS := dda.c map.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
