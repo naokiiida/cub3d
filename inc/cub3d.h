@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:51:58 by niida             #+#    #+#             */
-/*   Updated: 2025/02/08 20:30:24 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/09 12:46:08 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef CUB3D_H
@@ -45,7 +45,7 @@ typedef struct map
 	e_tile	**tiles;
 }			t_map;
 
-typedef struct fov
+typedef struct player
 {
 	double_t	x;
 	double_t	y;
@@ -54,7 +54,7 @@ typedef struct fov
 	double_t	distance;
 	double_t	camera_plane;
 	suseconds_t	tv_usec;
-}			t_fov;
+}			t_player;
 
 typedef enum window_size
 {
@@ -113,7 +113,7 @@ enum				e_mask
 };
 
 # endif
-double get_ray(t_fov fov, char **map, double ray_dir_x, double ray_dir_y, int map_width, int map_height);
+double get_ray(t_player fov, char **map, double ray_dir_x, double ray_dir_y, int map_width, int map_height);
 char **convert_map(char **map_data, int rows, int cols);
 
 #endif

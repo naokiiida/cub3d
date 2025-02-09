@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:50:10 by niida             #+#    #+#             */
-/*   Updated: 2025/02/08 20:41:57 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/09 12:46:08 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
-double	get_ray(t_fov fov, char **map, double ray_dir_x, double ray_dir_y, int map_width, int map_height)
+double	get_ray(t_player fov, char **map, double ray_dir_x, double ray_dir_y, int map_width, int map_height)
 {
 	double	side_dist_x;
 	double	side_dist_y;
@@ -95,7 +95,7 @@ double	get_ray(t_fov fov, char **map, double ray_dir_x, double ray_dir_y, int ma
 int	main(void)
 {
 	char	**map;
-	t_fov	fov;
+	t_player	fov;
 	double	ray_dir_x;
 	double	ray_dir_y;
 	double	distance;
