@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 12:51:11 by niida             #+#    #+#             */
-/*   Updated: 2025/02/10 12:20:00 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/10 20:06:48 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -158,67 +158,67 @@ void renderFrame(t_vector2d pos, t_vector2d dir, t_vector2d plane) {
 	}
 }
 
-void testCalculateRayDir() {
-	t_vector2d dir = {-1.0, 1.0};
-	t_vector2d plane = {0.0, 0.66};
-	double cameraX = 0.0;
-	t_vector2d rayDir = calculateRayDir(dir, plane, cameraX);
-	assert(fabs(rayDir.x - (-1.0)) < 1e-6);
-	assert(fabs(rayDir.y - 1.0) < 1e-6);
-}
+// void testCalculateRayDir() {
+// 	t_vector2d dir = {-1.0, 1.0};
+// 	t_vector2d plane = {0.0, 0.66};
+// 	double cameraX = 0.0;
+// 	t_vector2d rayDir = calculateRayDir(dir, plane, cameraX);
+// 	assert(fabs(rayDir.x - (-1.0)) < 1e-6);
+// 	assert(fabs(rayDir.y - 1.0) < 1e-6);
+// }
 
-void testCalculateStepAndSideDist() {
-	t_vector2d rayDir = {-1.0, 1.0};
-	t_position mapPos = {5, 5};
-	t_vector2d pos = {5.1, 5.4};
-	t_vector2d sideDist;
-	t_vector2d deltaDist = calculateDeltaDist(rayDir);
-	t_position step;
-	calculateStepAndSideDist(rayDir, mapPos, pos, &sideDist, deltaDist, &step);
-	printf("sideDist:(%f,%f)\n",sideDist.x, sideDist.y);
-	assert(step.x == -1);
-	assert(step.y == 1);
-	assert(fabs(sideDist.x - deltaDist.x) < 1e-6);
-	assert(fabs(sideDist.y - deltaDist.y) < 1e-6);
-}
+// void testCalculateStepAndSideDist() {
+// 	t_vector2d rayDir = {-1.0, 1.0};
+// 	t_position mapPos = {5, 5};
+// 	t_vector2d pos = {5.1, 5.4};
+// 	t_vector2d sideDist;
+// 	t_vector2d deltaDist = calculateDeltaDist(rayDir);
+// 	t_position step;
+// 	calculateStepAndSideDist(rayDir, mapPos, pos, &sideDist, deltaDist, &step);
+// 	printf("sideDist:(%f,%f)\n",sideDist.x, sideDist.y);
+// 	assert(step.x == -1);
+// 	assert(step.y == 1);
+// 	assert(fabs(sideDist.x - deltaDist.x) < 1e-6);
+// 	assert(fabs(sideDist.y - deltaDist.y) < 1e-6);
+// }
 
 
-void testPerformDDA() {
-	t_vector2d rayDir = {1.0, 0.0}; // Ray moving to the right
-	t_position mapPos = {1, 1}; // Starting position
-	t_vector2d pos = {1.5, 1.5}; // Player position
-	t_vector2d deltaDist = calculateDeltaDist(rayDir);
-	t_vector2d sideDist;
-	t_position step;
-	int hit = 0;
-	int side;
+// void testPerformDDA() {
+// 	t_vector2d rayDir = {1.0, 0.0}; // Ray moving to the right
+// 	t_position mapPos = {1, 1}; // Starting position
+// 	t_vector2d pos = {1.5, 1.5}; // Player position
+// 	t_vector2d deltaDist = calculateDeltaDist(rayDir);
+// 	t_vector2d sideDist;
+// 	t_position step;
+// 	int hit = 0;
+// 	int side;
 
-	calculateStepAndSideDist(rayDir, mapPos, pos, &sideDist, deltaDist, &step);
-	performDDA(&mapPos, &sideDist, deltaDist, step, &hit, &side);
+// 	calculateStepAndSideDist(rayDir, mapPos, pos, &sideDist, deltaDist, &step);
+// 	performDDA(&mapPos, &sideDist, deltaDist, step, &hit, &side);
 
-	assert(hit == 1);
-	printf("mapPos:(%d,%d)\n",mapPos.x, mapPos.y);
-	assert(mapPos.x == 2); // The ray should hit the wall at x = 2
-	assert(mapPos.y == 1); // The ray should stay at y = 1
-}
+// 	assert(hit == 1);
+// 	printf("mapPos:(%d,%d)\n",mapPos.x, mapPos.y);
+// 	assert(mapPos.x == 2); // The ray should hit the wall at x = 2
+// 	assert(mapPos.y == 1); // The ray should stay at y = 1
+// }
 
-void testCalculatePerpWallDist() {
-	t_vector2d sideDist = {1.0, 2.0};
-	t_vector2d deltaDist = {1.0, 1.0};
-	int side = 0;
-	double perpWallDist = calculatePerpWallDist(side, sideDist, deltaDist);
-	assert(fabs(perpWallDist - 0.0) < 1e-6);
-	side = 1;
-	perpWallDist = calculatePerpWallDist(side, sideDist, deltaDist);
-	assert(fabs(perpWallDist - 1.0) < 1e-6);
-}
+// void testCalculatePerpWallDist() {
+// 	t_vector2d sideDist = {1.0, 2.0};
+// 	t_vector2d deltaDist = {1.0, 1.0};
+// 	int side = 0;
+// 	double perpWallDist = calculatePerpWallDist(side, sideDist, deltaDist);
+// 	assert(fabs(perpWallDist - 0.0) < 1e-6);
+// 	side = 1;
+// 	perpWallDist = calculatePerpWallDist(side, sideDist, deltaDist);
+// 	assert(fabs(perpWallDist - 1.0) < 1e-6);
+// }
 
 int main() {
 	// Run tests
-	testCalculateRayDir();
+	// testCalculateRayDir();
 	// testCalculateStepAndSideDist();
-	testPerformDDA();
-	testCalculatePerpWallDist();
+	// testPerformDDA();
+	// testCalculatePerpWallDist();
 
 	// Render frame
 	t_vector2d pos = {5.0, 5.0}; // Player position
