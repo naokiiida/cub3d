@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:51:58 by niida             #+#    #+#             */
-/*   Updated: 2025/02/09 12:46:08 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/10 05:39:49 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef CUB3D_H
@@ -78,9 +78,10 @@ enum				e_event_trigger
 
 enum				e_keycode
 {
-	C = 99,
-	PLUS = 61,
-	MINUS = 45,
+	W = 119,
+	A = 97,
+	S = 115,
+	D = 100,
 	ESC = 65307,
 	ARROW_LEFT = 65361,
 	ARROW_RIGHT = 65363,
@@ -91,9 +92,10 @@ enum				e_keycode
 
 enum				e_keycode
 {
-	C = 8,
-	PLUS = 24,
-	MINUS = 27,
+	W = 13,
+	A = 0,
+	S = 1,
+	D = 2,
 	ESC = 53,
 	ARROW_LEFT = 123,
 	ARROW_RIGHT = 124,
