@@ -64,10 +64,10 @@ mlx_check:
 		exit 1; \
 	fi
 
-$(NAME): $(OBJS) | $(ODIR) mlx gnl
+$(NAME): $(OBJS) | $(ODIR) mlx gnl libft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-$(ODIR)%.o: $(SDIR)%.c | $(ODIR) mlx gnl
+$(ODIR)%.o: $(SDIR)%.c | $(ODIR) mlx gnl libft
 	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
 
 $(ODIR):
@@ -79,6 +79,9 @@ mlx:
 
 gnl:
 	@make -C $(GNL)
+
+libft:
+	@make -C $(LIBFT)
 
 clean:
 	@make $@ -C $(MLX)
@@ -120,4 +123,4 @@ build: fclean
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re mlx gnl libft
