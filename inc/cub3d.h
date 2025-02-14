@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/10 21:28:23 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/14 23:26:08 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <math.h>
-# include <mlx.h>
-# include "mlx/mlx.h"
-# include "get_next_line.h"
+// # include <mlx.h>
+# include "mlx.h"
 # include "libft.h"
+# include "get_next_line.h"
 
 # define X_EVENT_KEY_PRESS		2
 # define X_EVENT_KEY_RELEASE	3
@@ -54,9 +54,9 @@ typedef enum axis{
 
 typedef enum e_wall{
     NORTH_WALL,
-    SOUTH_WALL,			
-    WEST_WALL,			
-    EAST_WALL,				
+    SOUTH_WALL,
+    WEST_WALL,
+    EAST_WALL,
 }  e_wall;
 
 typedef struct vector2d
@@ -87,7 +87,7 @@ typedef struct s_player
     t_vector2d pos;
     t_vector2d dir;
     t_vector2d plane;
-    
+
     double move_speed;
     double rot_speed;
 }   t_player;
@@ -111,3 +111,4 @@ typedef struct    s_vars{
 
 void    init_vars(t_vars *vars);
 void    raycasting(t_vars *vars)
+#endif

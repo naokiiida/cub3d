@@ -19,12 +19,12 @@ endif
 
 LIBFT := libft/
 GNL := get_next_line/
-SRCS := main.c ft_mouse_hook.c ft_key_hook.c ft_common.c ft_calc_fractal.c ft_scroll.c ft_strncmp.c ft_atof.c ft_itoa.c ft_close.c ft_input.c ft_strjoin.c ft_strdup.c
+SRCS := main.c init.c map.c raycasting.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
 CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS)
-INCS = -I$(IDIR) -I$(MLX)
+INCS = -I$(IDIR) -I$(MLX) -I$(LIBFT) -I$(GNL)
 LDFLAGS = -L$(MLX) -lmlx -L$(LIBFT) -lft -L$(GNL) -lgnl
 
 ifeq ($(OS), Linux)
@@ -64,17 +64,21 @@ mlx_check:
 		exit 1; \
 	fi
 
-$(NAME): $(OBJS) | $(ODIR)
-	@make -C $(MLX)
-	@make -C $(GNL)
-	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
+$(NAME): $(OBJS) | $(ODIR) mlx gnl
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-$(ODIR)%.o:$(SDIR)%.c | $(ODIR)
+$(ODIR)%.o: $(SDIR)%.c | $(ODIR) mlx gnl
 	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
 
 $(ODIR):
 	@echo "Creating directory: $(ODIR)"
 	$(MKDIR) $@
+
+mlx:
+	@make -C $(MLX)
+
+gnl:
+	@make -C $(GNL)
 
 clean:
 	@make $@ -C $(MLX)
@@ -116,4 +120,4 @@ build: fclean
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re dev mlx_check pip norm fmt deps l san v build
+.PHONY: all clean fclean re
