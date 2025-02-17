@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 19:37:10 by naokiiida        ###   ########.fr       */
+/*   Updated: 2025/02/17 21:23:52 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,27 +106,29 @@ typedef struct s_texture
 	double		step;
 }				t_texture;
 
-typedef struct s_bufffer
+typedef struct s_img
 {
     void *img;
     char *addr;
     int bits_per_pixel;
     int line_length;
     int endian;
-}   t_buffer;
+}   t_img;
 
 typedef struct s_vars
 {
 	void		*mlx;
 	void		*win;
-	int			**map;
-	t_buffer *buffer;
+	int			map[ROWS][COLS];
+	t_img *buffer;
 	t_player	*player;
 	t_ray		*ray;
 	t_texture	*texture;
+	t_img		tile[4];
 }				t_vars;
 
 void			init(t_vars *vars);
 int				raycasting(t_vars *vars);
 void draw_buffer(t_vars *vars, int x);
+void	draw(t_vars *vars);
 #endif

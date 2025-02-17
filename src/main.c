@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:40:44 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 19:02:38 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/17 21:30:38 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int	main(int argc, char *argv[])
 	// mlx_hook(vars.win, X_EVENT_KEY_RELEASE, 0, &key_release, &vars);
 	// mlx_hook(vars.win, X_EVENT_KEY_EXIT, 0, &close, &vars);
 	// フレームごとに呼び出される関数
-	mlx_loop_hook(vars.mlx, &raycasting, &vars);
-	// loopの開始update
+	// mlx_loop_hook(vars.mlx, &raycasting, &vars);
+	// // loopの開始update
+	raycasting(&vars);
 	mlx_loop(vars.mlx);
+	return (0);
 }

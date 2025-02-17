@@ -6,14 +6,14 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 19:36:08 by naokiiida        ###   ########.fr       */
+/*   Updated: 2025/02/17 21:23:54 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // 壁に当たったか判定
-static bool	is_hit_wall(int **map, t_grid grid)
+static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
 {
 	if (0 < map[grid.x][grid.y] && map[grid.x][grid.y] <= 9)
 		return (true);
@@ -66,8 +66,8 @@ void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 	else
 	{
 		ray->step.x = 1;
-		ray->side_dist.x = (ray->grid.x + 1.0 - player->pos.x)
-			* ray->delta_dist.x;
+		ray->side_dist.x =
+			(ray->grid.x + 1.0 - player->pos.x) * ray->delta_dist.x;
 	}
 	if (ray->dir.y < 0)
 	{
@@ -77,13 +77,13 @@ void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 	else
 	{
 		ray->step.y = 1;
-		ray->side_dist.y = (ray->grid.y + 1.0 - player->pos.y)
-			* ray->delta_dist.y;
+		ray->side_dist.y =
+			(ray->grid.y + 1.0 - player->pos.y) * ray->delta_dist.y;
 	}
 }
 
 // DDAアルゴリズムによる壁の衝突判定
-void	perform_dda(t_ray *ray, int **map)
+void	perform_dda(t_ray *ray, int map[ROWS][COLS])
 {
 	while (is_hit_wall(map, ray->grid))
 	{
@@ -195,7 +195,7 @@ int	raycasting(t_vars *vars)
 
 	x = -1;
 	// 描画バッファの初期化
-	init_buffer(vars);
+	// init(vars);
 	// x方向にrayを飛ばす
 	while (++x < WIDTH)
 	{
@@ -210,11 +210,10 @@ int	raycasting(t_vars *vars)
 		// 壁のテクスチャ判定
 		decide_draw_texture(vars->ray, vars->texture);
 		// ヒットした壁のローカル座標を特定
-		get_texture_x(vars->ray, vars->player);
+		get_texture_x(vars->ray, vars->player, vars->texture);
 		// 描画バッファに壁を描画
 		draw_buffer(vars, x);
 	}
-	// バッファを画面に描画
 	draw(vars);
 	return (0);
 }
