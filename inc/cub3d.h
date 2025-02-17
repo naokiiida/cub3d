@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/03 21:47:57 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 21:23:52 by naokiiida        ###   ########.fr       */
+/*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
+/*   Updated: 2025/02/18 01:44:44 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,22 @@
 # include "libft.h"
 # include "mlx.h"
 
-# define X_EVENT_KEY_PRESS 2
-# define X_EVENT_KEY_RELEASE 3
-# define X_EVENT_KEY_EXIT 17
+enum e_x_events {
+ X_EVENT_KEY_PRESS = 2,
+ X_EVENT_KEY_RELEASE = 3,
+ X_EVENT_KEY_EXIT = 17
+};
 
-# define KEY_ESC 53
-# define KEY_W 13
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
-# define KEY_LEFT 123
-# define KEY_RIGHT 124
+enum e_keys {
+ KEY_ESC = 53,
+ KEY_Q = 12,
+ KEY_W = 13,
+ KEY_A = 0,
+ KEY_S = 1,
+ KEY_D = 2,
+ KEY_LEFT = 123,
+ KEY_RIGHT = 124
+};
 
 # define TILE_SIZE 64
 # define ROWS 11
@@ -131,4 +136,8 @@ void			init(t_vars *vars);
 int				raycasting(t_vars *vars);
 void draw_buffer(t_vars *vars, int x);
 void	draw(t_vars *vars);
+int	close_display(t_vars *vars);
+int	close_win(t_vars *vars);
+int key_press(int key, t_vars *vars);
+int key_release(int key, t_vars *vars);
 #endif
