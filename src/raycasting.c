@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 19:03:51 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/17 19:36:08 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ int	raycasting(t_vars *vars)
 		// 壁のテクスチャ判定
 		decide_draw_texture(vars->ray, vars->texture);
 		// ヒットした壁のローカル座標を特定
-		get_wall_hit_point(vars->ray, vars->player);
+		get_texture_x(vars->ray, vars->player);
 		// 描画バッファに壁を描画
 		draw_buffer(vars, x);
 	}

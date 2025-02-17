@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 19:01:26 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/17 19:37:10 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,5 @@ typedef struct s_vars
 
 void			init(t_vars *vars);
 int				raycasting(t_vars *vars);
+void draw_buffer(t_vars *vars, int x);
 #endif
