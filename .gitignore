@@ -56,3 +56,9 @@ dkms.conf
 
 # macOS
 .DS_Store
+.cache/
+.clangd
+compile_commands.json
+cub3d
+minilibx*/
+test/

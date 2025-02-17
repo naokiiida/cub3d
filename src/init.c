@@ -6,15 +6,16 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:36:14 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/14 18:31:25 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:56:01 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void init(t_vars *vars)
+void	init(t_vars *vars)
 {
     int i;
+    int j;
     vars->mlx = mlx_init();
     vars->win = mlx_new_window(vars->mlx, WIDTH, HEIGHT, "cub3d");
     vars->ray = (t_ray *)calloc(sizeof(t_ray));
@@ -53,6 +54,7 @@ void init(t_vars *vars)
     i = 0;
     while (i < ROWS)
     {
+        j = 0;
         while (j < COLS)
         {
             vars->map[i][j] = map[i][j];
