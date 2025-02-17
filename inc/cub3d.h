@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/10 21:28:23 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/14 18:10:04 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct grid
 	int	y;
 }	t_grid;
 
-
 typedef  struct   s_ray{
     t_vector2d dir;
     t_vector2d delta_dist;
@@ -101,10 +100,20 @@ typedef struct s_texture
     double step;
 }   t_texture;
 
+typedef struct s_bufffer
+{
+    void *img;
+    char *addr;
+    int bits_per_pixel;
+    int line_length;
+    int endian;
+}   t_buffer;
+
 typedef struct    s_vars{
     void *mlx;
     void *win;
     int map[ROWS][COLS];
+    t_buffer *buffer;
     t_player *player;
     t_ray *ray;
 }         t_vars;

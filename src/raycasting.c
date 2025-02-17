@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/10 21:54:46 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/14 17:50:34 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,8 @@ void    raycasting(t_vars *vars)
 	int x;
 
 	x = -1;
+	// 描画バッファの初期化
+	init_buffer(vars);
 	// x方向にrayを飛ばす
 	while (++x < WIN_WIDTH)
 	{
@@ -195,7 +197,9 @@ void    raycasting(t_vars *vars)
 		decide_draw_texture(vars->ray, vars);	
 		// ヒットした壁のローカル座標を特定
 		get_wall_hit_point(vars->ray, vars->player);
-		// 描画
-		draw_wall(vars, x);
+		// 描画バッファに壁を描画
+		draw_buffer(vars, x);
 	}
+	// バッファを画面に描画
+	draw(vars);
 }

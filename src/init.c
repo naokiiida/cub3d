@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:36:14 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/10 20:58:07 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/14 18:31:25 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ void init(t_vars *vars)
     vars->player = (t_player *)calloc(sizeof(t_player));
     vars->map = (int **)malloc(sizeof(int *) * ROWS);
     vars->texture = (t_texture *)calloc(sizeof(t_texture));
+    // 描画バッファの初期化
+    vars->buffer->img = mlx_new_image(vars->mlx, WIDTH, HEIGHT);
+    vars->buffer->bits_per_pixel = 32;
+    vars->buffer->line_length = WIDTH * 4;
+    vars->buffer->endian = 0;
+    vars->buffer->addr = mlx_get_data_addr(vars->buffer->img, &vars->buffer->bits_per_pixel, &vars->buffer->line_length, &vars->buffer->endian);
 
     vars->player->pos.x = 3.5;
     vars->player->pos.y = 3.5;
@@ -54,4 +60,7 @@ void init(t_vars *vars)
         }
         i++;
     }
+
+    // 画像をロードし、画像のピクセルデータを取得
+    
 }
