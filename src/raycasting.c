@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 18:53:00 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 21:23:54 by naokiiida        ###   ########.fr       */
+/*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
+/*   Updated: 2025/02/18 03:03:16 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 	else
 	{
 		ray->step.x = 1;
-		ray->side_dist.x =
-			(ray->grid.x + 1.0 - player->pos.x) * ray->delta_dist.x;
+		ray->side_dist.x = (ray->grid.x + 1.0 - player->pos.x) * ray->delta_dist.x;
 	}
 	if (ray->dir.y < 0)
 	{
@@ -77,8 +76,7 @@ void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 	else
 	{
 		ray->step.y = 1;
-		ray->side_dist.y =
-			(ray->grid.y + 1.0 - player->pos.y) * ray->delta_dist.y;
+		ray->side_dist.y = (ray->grid.y + 1.0 - player->pos.y) * ray->delta_dist.y;
 	}
 }
 
@@ -167,18 +165,24 @@ void	decide_draw_texture(t_ray *ray, t_texture *texture)
 }
 
 // ヒットしたx座標を特定
-int	get_wall_x(t_ray *ray, t_player *player)
+double	get_wall_x(t_ray *ray, t_player *player)
 {
+	double	wall_x;
+
 	if (ray->side == X_AXIS)
-		return (player->pos.y + ray->perp_wall_dist * ray->dir.y);
+		wall_x = (player->pos.y + ray->perp_wall_dist * ray->dir.y);
 	else
-		return (player->pos.x + ray->perp_wall_dist * ray->dir.x);
+		wall_x = (player->pos.x + ray->perp_wall_dist * ray->dir.x);
+	wall_x -= floor(wall_x);
+	assert(wall_x >= 0.0);
+	assert(wall_x <= 1.0);
+	return (wall_x);
 }
 
 // ヒットした壁のローカル座標を特定
 void	get_texture_x(t_ray *ray, t_player *player, t_texture *texture)
 {
-	int	wall_x;
+	double	wall_x;
 
 	wall_x = get_wall_x(ray, player);
 	texture->tex_x = (int)(wall_x * (double)TEXTURE_WIDTH);
@@ -213,6 +217,7 @@ int	raycasting(t_vars *vars)
 		get_texture_x(vars->ray, vars->player, vars->texture);
 		// 描画バッファに壁を描画
 		draw_buffer(vars, x);
+		draw_map(vars);
 	}
 	draw(vars);
 	return (0);

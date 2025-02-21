@@ -49,7 +49,7 @@ void	init(t_vars *vars)
 	// 画像のロードとピクセルデータの取得
     int k = 0;
 	char *path[4] = {"img/redbrick.xpm", "img/wood.xpm", "img/greystone.xpm", "img/bluestone.xpm"};
-    int tile_size[2] = {64, 64};
+    int tile_size[2] = {TEXTURE_WIDTH, TEXTURE_HEIGHT};
 	while (k < 4)
     {
         vars->tile[k].bits_per_pixel = 32;

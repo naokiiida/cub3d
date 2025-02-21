@@ -19,7 +19,7 @@ endif
 
 LIBFT := libft/
 GNL := get_next_line/
-SRCS := main.c init.c raycasting.c draw.c move.c
+SRCS := main.c init.c raycasting.c draw.c move.c map.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP

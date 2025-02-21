@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/18 01:44:44 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/18 03:14:57 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "get_next_line.h"
 # include "libft.h"
 # include "mlx.h"
+# include <assert.h>
 
 enum e_x_events {
  X_EVENT_KEY_PRESS = 2,
@@ -52,6 +53,12 @@ enum e_keys {
 // # define FOV_ANGLE 60 * (M_PI / 180)
 // # define WALL_STRIP_WIDTH 1
 // # define NUM_RAYS WIDTH / WALL_STRIP_WIDTH
+
+enum e_map
+{
+	MAP_WALL = 1,
+	MAP_BLANK = 0
+};
 
 # define MINIMAP_SCALE_FACTOR 0.2
 
@@ -140,4 +147,6 @@ int	close_display(t_vars *vars);
 int	close_win(t_vars *vars);
 int key_press(int key, t_vars *vars);
 int key_release(int key, t_vars *vars);
+void	buffer_mlx_pixel_put(t_img *buffer, int x, int y, int color);
+void draw_map(t_vars *vars);
 #endif
