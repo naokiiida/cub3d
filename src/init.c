@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 18:36:14 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/17 21:13:48 by naokiiida        ###   ########.fr       */
+/*   Created: 2025/02/10 18:36:14 by naokiiida         #+#    #+#             */
+/*   Updated: 2025/02/22 19:48:32 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	init(t_vars *vars)
 {
 	int	i;
 	int	j;
-	int map[ROWS][COLS] = {
+	int map[ROWS][COLS] =
+	{
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -63,8 +64,10 @@ void	init(t_vars *vars)
         k++;
     }
 
-	vars->player->pos.x = 3.5;
+    vars->player->pos.x = 3.5;
 	vars->player->pos.y = 3.5;
+	// vars->player->pos.x = 12;
+	// vars->player->pos.y = 5;
 	vars->player->dir.x = -1;
 	vars->player->dir.y = 0;
 	vars->player->plane.x = 0;

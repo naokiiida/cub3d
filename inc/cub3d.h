@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 16:50:01 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 19:47:16 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ enum e_keys
 };
 
 # define TILE_SIZE 64
+// # define ROWS 24
+// # define COLS 24
 # define ROWS 11
 # define COLS 15
 # define WIDTH 800
@@ -129,19 +131,19 @@ typedef struct s_texture
 
 typedef struct s_img
 {
-    void *img;
-    char *addr;
-    int bits_per_pixel;
-    int line_length;
-    int endian;
-}   t_img;
+	void *img;
+	char *addr;
+	int bits_per_pixel;
+	int line_length;
+	int endian;
+}	t_img;
 
 typedef struct s_vars
 {
 	void		*mlx;
 	void		*win;
 	int			map[ROWS][COLS];
-	t_img *buffer;
+	t_img		*buffer;
 	t_player	*player;
 	t_ray		*ray;
 	t_texture	*texture;
@@ -158,4 +160,7 @@ int key_press(int key, t_vars *vars);
 int key_release(int key, t_vars *vars);
 void	buffer_mlx_pixel_put(t_img *buffer, int x, int y, int color);
 void draw_map(t_vars *vars);
+t_vector2d	vector_add(t_vector2d v1, t_vector2d v2);
+t_vector2d	vector_scale(t_vector2d v, double scale);
+t_vector2d	vector_rotate(t_vector2d v, double angle);
 #endif
