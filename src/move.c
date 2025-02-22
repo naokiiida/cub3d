@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 00:35:01 by niida             #+#    #+#             */
-/*   Updated: 2025/02/22 19:51:06 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 20:38:08 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -43,9 +43,6 @@ void	key_rotate(t_player *p, int direction)
 
 int	key_press(int key, t_vars *vars)
 {
-	if (key != KEY_W && key != KEY_S && key != KEY_A && key != KEY_D
-		&& key != KEY_ESC)
-		return (0);
 	if (key == KEY_W)
 		move_player(vars->map, vars->player, 1, vars->player->dir);
 	if (key == KEY_S)
