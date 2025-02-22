@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:36:24 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/18 02:26:06 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 17:06:35 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,28 @@ void	draw_buffer(t_vars *vars, int x)
 	int				y;
 	unsigned int	color;
 	int				i;
+	t_texture		*tex;
 
+	tex = vars->texture;
 	i = 0;
-	while (i < vars->texture->draw_start)
+	//天井
+	while (i < tex->draw_start)
+		buffer_mlx_pixel_put(vars->buffer, x, i++, 0xFFFFFF);
+	//壁
+	// y = 0;
+	(void)y;
+	while (i < tex->draw_end)
 	{
-		buffer_mlx_pixel_put(vars->buffer, x, i, 0xFFFFFF);
-		i++;
-	}
-	y = 0;
-	while (i < vars->texture->draw_end)
-	{
-		color = get_tile_color(&vars->tile[vars->texture->tex_num], vars->texture->tex_x, y);
+		// color = get_tile_color(&vars->tile[tex->id], tex->tex_x, y);
+		color = 0xAAAAAA;
 		buffer_mlx_pixel_put(vars->buffer, x, i, color);
 		i++;
 		// 描画するタイルのy座標を更新
-		y += vars->texture->step;
+		// y += tex->step;
 	}
+	//床
 	while (i < HEIGHT)
-	{
-		buffer_mlx_pixel_put(vars->buffer, x, i, 0x0);
-		i++;
-	}
+		buffer_mlx_pixel_put(vars->buffer, x, i++, 0x0);
 }
 
 // 描画バッファを画面に描画

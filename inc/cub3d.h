@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 15:18:39 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 16:50:01 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ typedef struct s_player
 
 typedef struct s_texture
 {
-	t_wall		tex_num;
+	t_wall		id;
 	int			draw_start;
 	int			draw_end;
 	int			tex_x;

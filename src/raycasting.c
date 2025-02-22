@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/18 03:03:16 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 16:50:01 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 	else
 	{
 		ray->step.x = 1;
-		ray->side_dist.x = (ray->grid.x + 1.0 - player->pos.x) * ray->delta_dist.x;
+		ray->side_dist.x = (ray->grid.x + 1.0 - player->pos.x)
+			* ray->delta_dist.x;
 	}
 	if (ray->dir.y < 0)
 	{
@@ -76,7 +77,8 @@ void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 	else
 	{
 		ray->step.y = 1;
-		ray->side_dist.y = (ray->grid.y + 1.0 - player->pos.y) * ray->delta_dist.y;
+		ray->side_dist.y = (ray->grid.y + 1.0 - player->pos.y)
+			* ray->delta_dist.y;
 	}
 }
 
@@ -151,16 +153,16 @@ void	decide_draw_texture(t_ray *ray, t_texture *texture)
 	if (ray->side == X_AXIS)
 	{
 		if (ray->dir.x < 0)
-			texture->tex_num = WEST_WALL;
+			texture->id = WEST_WALL;
 		else
-			texture->tex_num = EAST_WALL;
+			texture->id = EAST_WALL;
 	}
 	else
 	{
 		if (ray->dir.y < 0)
-			texture->tex_num = NORTH_WALL;
+			texture->id = NORTH_WALL;
 		else
-			texture->tex_num = SOUTH_WALL;
+			texture->id = SOUTH_WALL;
 	}
 }
 
@@ -180,16 +182,18 @@ double	get_wall_x(t_ray *ray, t_player *player)
 }
 
 // ヒットした壁のローカル座標を特定
-void	get_texture_x(t_ray *ray, t_player *player, t_texture *texture)
+int get_texture_x(t_ray *ray, t_player *player)
 {
+	int		tex_x;
 	double	wall_x;
 
 	wall_x = get_wall_x(ray, player);
-	texture->tex_x = (int)(wall_x * (double)TEXTURE_WIDTH);
+	tex_x = (int)(wall_x * (double)TEXTURE_WIDTH);
 	if (ray->side == X_AXIS && ray->dir.x > 0)
-		texture->tex_x = TEXTURE_WIDTH - texture->tex_x - 1;
+		tex_x = TEXTURE_WIDTH - tex_x - 1;
 	if (ray->side == Y_AXIS && ray->dir.y < 0)
-		texture->tex_x = TEXTURE_WIDTH - texture->tex_x - 1;
+		tex_x = TEXTURE_WIDTH - tex_x - 1;
+	return tex_x;
 }
 
 // フレームごとに描画を更新する関数
@@ -214,7 +218,7 @@ int	raycasting(t_vars *vars)
 		// 壁のテクスチャ判定
 		decide_draw_texture(vars->ray, vars->texture);
 		// ヒットした壁のローカル座標を特定
-		get_texture_x(vars->ray, vars->player, vars->texture);
+		vars->texture->tex_x = get_texture_x(vars->ray, vars->player);
 		// 描画バッファに壁を描画
 		draw_buffer(vars, x);
 		draw_map(vars);

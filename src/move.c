@@ -6,18 +6,14 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 00:35:01 by niida             #+#    #+#             */
-/*   Updated: 2025/02/18 01:51:53 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 17:13:16 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
 
-int key_press(int key, t_vars *vars)
+int	key_press(int key, t_vars *vars)
 {
 	printf("key press: %d\t", key);
-	if (vars->win == NULL)
-		return (1);
-	if (key == KEY_ESC)
-		close_win(vars);
 	if (key == KEY_W)
 		vars->player->pos.y -= 1;
 	if (key == KEY_S)
@@ -26,13 +22,15 @@ int key_press(int key, t_vars *vars)
 		vars->player->pos.x -= 1;
 	if (key == KEY_D)
 		vars->player->pos.x += 1;
+	if (key == KEY_ESC)
+		close_win(vars);
 	raycasting(vars);
-	printf("player pos: x=%f, y=%f\n", vars->player->pos.x, vars->player->pos.y);
+	printf("player at: x=%f, y=%f\n", vars->player->pos.x, vars->player->pos.y);
+	printf("tex_x: %d\n", vars->texture->tex_x);
 	return (0);
 }
 
-
-int key_release(int key, t_vars *vars)
+int	key_release(int key, t_vars *vars)
 {
 	printf("key release: %d\n", key);
 	if (vars->win == NULL)
