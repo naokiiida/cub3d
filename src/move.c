@@ -22,8 +22,8 @@ void	move_player(int map[ROWS][COLS], t_player *p, int dir, t_vector2d v)
 
 	movement = vector_scale(v, p->move_speed * dir);
 	next_pos = vector_add(p->pos, movement);
-	if (map[(int)next_pos.x][(int)p->pos.y]
-		|| map[(int)p->pos.x][(int)next_pos.y])
+	if (map[(int)next_pos.y][(int)p->pos.x] == MAP_WALL
+		|| map[(int)p->pos.y][(int)next_pos.x] == MAP_WALL)
 	{
 		printf("\033[1;31mreached wall\033[0m\n");
 		return ;

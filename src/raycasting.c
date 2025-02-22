@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 16:50:01 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 20:38:30 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // 壁に当たったか判定
 static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
 {
-	if (0 < map[grid.x][grid.y] && map[grid.x][grid.y] <= 9)
+	if (map[grid.y][grid.x] == MAP_WALL)
 		return (true);
 	return (false);
 }
