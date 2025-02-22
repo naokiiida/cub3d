@@ -56,6 +56,10 @@ enum e_keys
 // # define COLS 24
 # define ROWS 11
 # define COLS 15
+# define ROWS 24
+# define COLS 24
+// # define ROWS 11
+// # define COLS 15
 # define WIDTH 800
 # define HEIGHT 600
 # define TEXTURE_WIDTH 10
