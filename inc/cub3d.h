@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 19:47:16 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 21:05:50 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,15 @@ enum e_keys
 	KEY_RIGHT = 124
 };
 
-# define TILE_SIZE 64
-// # define ROWS 24
-// # define COLS 24
-# define ROWS 11
-# define COLS 15
+// # define TILE_SIZE 64
 # define ROWS 24
 # define COLS 24
 // # define ROWS 11
 // # define COLS 15
 # define WIDTH 800
 # define HEIGHT 600
-# define TEXTURE_WIDTH 10
-# define TEXTURE_HEIGHT 10
+# define TEXTURE_WIDTH 64
+# define TEXTURE_HEIGHT 64
 
 // # define FOV_ANGLE 60 * (M_PI / 180)
 // # define WALL_STRIP_WIDTH 1
