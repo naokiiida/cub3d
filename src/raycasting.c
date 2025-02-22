@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 20:38:30 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 21:35:43 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static void	init_ray(t_vars *vars, int x)
 	// カメラ平面上の位置を計算
 	camera_x = calculate_camera_x(x);
 	// rayの方向を計算
-	ray_dir = calculate_ray_dir(vars->ray->dir, vars->player->plane, camera_x);
+	ray_dir = calculate_ray_dir(vars->player->dir, vars->player->plane, camera_x);
 	// マップ上の初期座標を取得
 	vars->ray->grid.x = (int)vars->player->pos.x;
 	vars->ray->grid.y = (int)vars->player->pos.y;
