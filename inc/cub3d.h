@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/18 03:14:57 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/22 15:18:39 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,30 @@
 # include "mlx.h"
 # include <assert.h>
 
-enum e_x_events {
- X_EVENT_KEY_PRESS = 2,
- X_EVENT_KEY_RELEASE = 3,
- X_EVENT_KEY_EXIT = 17
+enum e_x_events
+{
+	X_EVENT_KEY_PRESS = 2,
+	X_EVENT_KEY_RELEASE = 3,
+	X_EVENT_KEY_EXIT = 17
 };
 
-enum e_keys {
- KEY_ESC = 53,
- KEY_Q = 12,
- KEY_W = 13,
- KEY_A = 0,
- KEY_S = 1,
- KEY_D = 2,
- KEY_LEFT = 123,
- KEY_RIGHT = 124
+enum e_x_masks
+{
+	X_KEY_PRESS_MASK = 1L << 0,
+	X_KEY_RELEASE_MASK = 1L << 1,
+	X_STRUCTURE_NOTIFY_MASK = 1L << 17,
+};
+
+enum e_keys
+{
+	KEY_ESC = 53,
+	KEY_Q = 12,
+	KEY_W = 13,
+	KEY_A = 0,
+	KEY_S = 1,
+	KEY_D = 2,
+	KEY_LEFT = 123,
+	KEY_RIGHT = 124
 };
 
 # define TILE_SIZE 64
