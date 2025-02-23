@@ -12,14 +12,6 @@
 
 #include "cub3d.h"
 
-// 壁に当たったか判定
-static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
-{
-	if (map[grid.y][grid.x] == MAP_WALL)
-		return (true);
-	return (false);
-}
-
 // カメラ平面上の位置を計算するための正規化用変数の生成関数
 double	calculate_camera_x(int x)
 {
@@ -80,6 +72,14 @@ void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 		ray->side_dist.y = (ray->grid.y + 1.0 - player->pos.y)
 			* ray->delta_dist.y;
 	}
+}
+
+// 壁に当たったか判定
+static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
+{
+	if (map[grid.y][grid.x] != MAP_BLANK)
+		return (true);
+	return (false);
 }
 
 // DDAアルゴリズムによる壁の衝突判定
