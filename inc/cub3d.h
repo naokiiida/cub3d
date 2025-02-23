@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 21:05:50 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/23 10:18:07 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,19 +131,23 @@ typedef struct s_texture
 
 typedef struct s_img
 {
-	void *img;
-	char *addr;
-	int bits_per_pixel;
-	int line_length;
-	int endian;
+	void	*img;
+	char	*addr; //int *data
+
+	int		*data;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		img_width;
+	int		img_height;
 }	t_img;
 
 typedef struct s_vars
 {
 	void		*mlx;
 	void		*win;
-	int			map[ROWS][COLS];
 	t_img		*buffer;
+	int			map[ROWS][COLS];
 	t_player	*player;
 	t_ray		*ray;
 	t_texture	*texture;
