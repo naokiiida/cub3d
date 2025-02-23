@@ -34,11 +34,8 @@ void	move_player(int map[ROWS][COLS], t_player *p, int dir, t_vector2d v)
 
 void	key_rotate(t_player *p, int direction)
 {
-	double	angle;
-
-	angle = p->rot_speed * direction;
-	p->dir = vector_rotate(p->dir, angle);
-	p->plane = vector_rotate(p->plane, angle);
+	p->dir = vector_rotate(p->dir, p->rot_speed * direction);
+	p->plane = vector_rotate(p->plane, p->rot_speed * direction);
 }
 
 int	key_press(int key, t_vars *vars)
@@ -48,20 +45,19 @@ int	key_press(int key, t_vars *vars)
 	if (key == KEY_S)
 		move_player(vars->map, vars->player, -1, vars->player->dir);
 	if (key == KEY_A)
-		move_player(vars->map, vars->player, 1, vars->player->plane);
-	if (key == KEY_D)
 		move_player(vars->map, vars->player, -1, vars->player->plane);
+	if (key == KEY_D)
+		move_player(vars->map, vars->player, 1, vars->player->plane);
 	if (key == KEY_LEFT)
 		key_rotate(vars->player, 1);
 	if (key == KEY_RIGHT)
 		key_rotate(vars->player, -1);
 	if (key == KEY_ESC)
 		close_win(vars);
-	printf("key press: %d\t", key);
-	printf("player at: x=%f, y=%f\n", vars->player->pos.x, vars->player->pos.y);
-	printf("tex_x: %d\n", vars->texture->tex_x);
-	printf("plane{%f, %f}, vector{%f, %f}\n", vars->player->plane.x,
-		vars->player->plane.y, vars->player->dir.x, vars->player->dir.y);
+	printf("pos: %lf,%lf\tdir: %lf,%lf\tplane: %lf,%lf\n",
+		vars->player->pos.x, vars->player->pos.y,
+		vars->player->dir.x, vars->player->dir.y,
+		vars->player->plane.x, vars->player->plane.y);
 	mlx_clear_window(vars->mlx, vars->win);
 	raycasting(vars);
 	return (0);
