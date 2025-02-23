@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/23 11:54:51 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/23 18:31:07 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void	decide_draw_texture(t_ray *ray, t_texture *texture)
 }
 
 // ヒットしたx座標を特定
-double	get_wall_x(t_ray *ray, t_player *player)
+static double	get_wall_x(t_ray *ray, t_player *player)
 {
 	double	wall_x;
 
@@ -189,7 +189,7 @@ int get_texture_x(t_ray *ray, t_player *player)
 		tex_x = TEXTURE_WIDTH - tex_x - 1;
 	if (ray->side == Y_AXIS && ray->dir.y < 0)
 		tex_x = TEXTURE_WIDTH - tex_x - 1;
-	return tex_x;
+	return (tex_x);
 }
 
 // フレームごとに描画を更新する関数
@@ -217,7 +217,6 @@ int	raycasting(t_vars *vars)
 		vars->texture->tex_x = get_texture_x(vars->ray, vars->player);
 		// 描画バッファに壁を描画
 		draw_buffer(vars, x);
-		draw_map(vars);
 	}
 	draw(vars);
 	return (0);
