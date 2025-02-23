@@ -74,17 +74,16 @@ static void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 void	init_ray(t_vars *vars, int x)
 {
 	double		camera_x;
-	t_vector2d	ray_dir;
 
 	// カメラ平面上の位置を計算
 	camera_x = calculate_camera_x(x);
 	// rayの方向を計算
-	ray_dir = calculate_ray_dir(vars->player->dir, vars->player->plane, camera_x);
-	// マップ上の初期座標を取得
+	vars->ray->dir = calculate_ray_dir(vars->player->dir, vars->player->plane, camera_x);
+	// マップ上の初期座標を取得 (マップの行へプレーヤーのxを当ててる)
 	vars->ray->grid.x = (int)vars->player->pos.x;
 	vars->ray->grid.y = (int)vars->player->pos.y;
 	// rayの方向によって、x,y方向の移動量を計算
-	vars->ray->delta_dist = calculate_delta_dist(ray_dir);
+	vars->ray->delta_dist = calculate_delta_dist(vars->ray->dir);
 	// 始めの整数座標までの値を求め、ray->side_distに代入
 	calculate_step_and_side_dist(vars->ray, vars->player);
 }
