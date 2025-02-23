@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 00:35:01 by niida             #+#    #+#             */
-/*   Updated: 2025/02/22 20:38:08 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/23 18:32:54 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -22,14 +22,10 @@ void	move_player(int map[ROWS][COLS], t_player *p, int dir, t_vector2d v)
 
 	movement = vector_scale(v, p->move_speed * dir);
 	next_pos = vector_add(p->pos, movement);
-	if (map[(int)next_pos.y][(int)p->pos.x] == MAP_WALL
-		|| map[(int)p->pos.y][(int)next_pos.x] == MAP_WALL)
-	{
-		printf("\033[1;31mreached wall\033[0m\n");
-		return ;
-	}
-	p->pos.x = next_pos.x;
-	p->pos.y = next_pos.y;
+	if (!map[(int)next_pos.x][(int)p->pos.y])
+		p->pos.x = next_pos.x;
+	if (!map[(int)p->pos.x][(int)next_pos.y])
+		p->pos.y = next_pos.y;
 }
 
 void	key_rotate(t_player *p, int direction)
