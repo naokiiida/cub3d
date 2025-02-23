@@ -92,7 +92,7 @@ void	init_ray(t_vars *vars, int x)
 // 壁に当たったか判定
 static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
 {
-	if (map[grid.y][grid.x] != MAP_BLANK)
+	if (map[grid.x][grid.y] != MAP_BLANK)
 		return (true);
 	return (false);
 }
@@ -100,7 +100,7 @@ static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
 // DDAアルゴリズムによる壁の衝突判定
 void	perform_dda(t_ray *ray, int map[ROWS][COLS])
 {
-	while (is_hit_wall(map, ray->grid))
+	while (!is_hit_wall(map, ray->grid))
 	{
 		if (ray->side_dist.x < ray->side_dist.y)
 		{
