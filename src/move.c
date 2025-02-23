@@ -62,6 +62,7 @@ int	key_press(int key, t_vars *vars)
 	printf("tex_x: %d\n", vars->texture->tex_x);
 	printf("plane{%f, %f}, vector{%f, %f}\n", vars->player->plane.x,
 		vars->player->plane.y, vars->player->dir.x, vars->player->dir.y);
+	mlx_clear_window(vars->mlx, vars->win);
 	raycasting(vars);
 	return (0);
 }
