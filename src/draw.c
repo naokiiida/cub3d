@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:36:24 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 20:31:22 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/23 19:01:56 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	buffer_mlx_pixel_put(t_img *buffer, int x, int y, int color)
 // 描画バッファに壁を描画
 void	draw_buffer(t_vars *vars, int x)
 {
-	int				y;
+	int				tex_y;
+	double			tex_pos;
 	unsigned int	color;
 	int				i;
 	t_texture		*tex;
@@ -48,16 +49,18 @@ void	draw_buffer(t_vars *vars, int x)
 	while (i < tex->draw_start)
 		buffer_mlx_pixel_put(vars->buffer, x, i++, 0xAABBCC);
 	//壁
-	y = 0;
+	tex_pos = (tex->draw_start - HEIGHT / 2 + tex->line_height / 2) * tex->step;
+	tex_y = 0;
 	// (void)y;
 	while (i < tex->draw_end)
 	{
-		color = get_tile_color(&vars->tile[tex->id], tex->tex_x, y);
+		tex_y = (int)tex_pos & (TEXTURE_HEIGHT - 1);
+		tex_pos += tex->step;
+		color = get_tile_color(&vars->tile[tex->id], tex->tex_x, tex_y);
 		// color = 0xAAAAAA;
 		buffer_mlx_pixel_put(vars->buffer, x, i, color);
 		i++;
 		// 描画するタイルのy座標を更新
-		y += tex->step;
 	}
 	//床
 	while (i < HEIGHT)

@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/23 10:18:07 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/23 17:21:17 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ enum e_keys
 // # define COLS 15
 # define WIDTH 640
 # define HEIGHT 480
+//has to be power of 2 for & (TEXTURE_HEIGHT - 1) wrap around to work
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
 
@@ -125,6 +126,7 @@ typedef struct s_texture
 	t_wall		id;
 	int			draw_start;
 	int			draw_end;
+	int			line_height;
 	int			tex_x;
 	double		step;
 }				t_texture;

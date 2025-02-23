@@ -140,6 +140,7 @@ void	calculate_wall_size(t_ray *ray, t_texture *texture)
 		texture->draw_end = HEIGHT - 1;
 	// 画面ピクセルあたりのテクスチャ座標の増分を計算
 	texture->step = 1.0 * TEXTURE_HEIGHT / line_height;
+	texture->line_height = line_height;
 }
 
 // 壁の東西南北のテクスチャの決定
