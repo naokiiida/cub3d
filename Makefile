@@ -1,4 +1,4 @@
-NAME := cub3d
+NAME := cub3D
 
 CC := cc
 MKDIR := mkdir -p
@@ -100,10 +100,11 @@ pip: requirements.txt
 	python3 -m pip list --outdated
 	python3 -m pip install -U -r requirements.txt
 
-norm: $(SRCS) pip
+norm: $(SRCS)
 	norminette $(SRCS)
+	nm -u $(NAME) | grep -v -E "_(open|close|read|write|printf|malloc|free|perror|strerror|exit|gettimeofday|sin|cos|tan|asin|acos|atan|atan2|sqrt|pow|ceil|floor|round|trunc|fabs|abs|mlx_init|mlx_new_window|mlx_new_image|mlx_put_image_to_window|mlx_loop|mlx_get_data_addr|mlx_destroy_image|mlx_destroy_window|mlx_hook|mlx_loop_hook|mlx_string_put|mlx_get_color_value|mlx_clear_window|mlx_pixel_put|mlx_key_hook|mlx_mouse_hook)@@"
 
-fmt: $(SRCS) pip
+fmt: $(SRCS)
 	c_formatter_42 $(SRCS)*.c $(IDIR)*.h
 
 deps:
@@ -115,6 +116,9 @@ l: fclean
 san: fclean
 	@make all WITH_ASAN=1 WITH_NDEF=1
 
+# DO NOT RUN WITH_ASAN=1 WITH_NDEF=1, as it will conflict
+drun:
+	MallocGuardEdges=1 MallocCheckHeapStart=1 ./$(NAME)
 v: all
 	valgrind --leak-check=full --trace-children=yes ./$(NAME)
 
@@ -123,4 +127,4 @@ build: fclean
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re mlx gnl libft
+.PHONY: all clean fclean re mlx gnl libft re pip norm fmt deps l san v build drun
