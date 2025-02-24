@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/24 13:26:48 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/24 17:51:11 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 // # include <mlx.h>
-# include "get_next_line.h"
 # include "libft.h"
 # include "mlx.h"
 # include <assert.h>
@@ -129,6 +128,8 @@ typedef struct s_texture
 	int			line_height;
 	int			tex_x;
 	double		step;
+	int			ceiling_color;
+	int			floor_color;
 }				t_texture;
 
 typedef struct s_img
@@ -153,10 +154,12 @@ typedef struct s_vars
 	t_player	*player;
 	t_ray		*ray;
 	t_texture	*texture;
+	char		*path[4];
 	t_img		tile[4];
 }				t_vars;
 
-void	err(char *function_name, const char *msg);
+int				get_input(char *file, t_vars *vars);
+int				err(char *function_name, const char *msg);
 int				init(t_vars *vars);
 int				raycasting(t_vars *vars);
 void			draw_buffer(t_vars *vars, int x);

@@ -6,18 +6,19 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:38:44 by niida             #+#    #+#             */
-/*   Updated: 2025/02/24 13:36:04 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/24 17:18:05 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
 #include "libft.h"
 
-void	err(char *function_name, const char *msg)
+int	err(char *function_name, const char *msg)
 {
 	ft_putendl_fd("Error", 2);
 	ft_putstr_fd(function_name, 2);
 	ft_putstr_fd(":\t", 2);
 	perror(msg);
+	return (EXIT_FAILURE);
 }
 
 #ifdef __APPLE__

@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:40:44 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/22 19:52:42 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/24 13:47:18 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,14 @@ int	main(int argc, char *argv[])
 
 	(void)argc;
 	(void)argv;
+	if (argc != 2)
+	{
+		printf("usage: cub3D <single.cub>");
+		return (1);
+	}
+	if (get_input(argv[1], &vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	// ゲームの初期化
-	init(&vars);
 	if (init(&vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	// hookの設定　キー入力、キー解放、ウィンドウの閉じるボタン
