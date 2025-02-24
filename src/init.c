@@ -6,22 +6,30 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:36:14 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/23 12:07:19 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/24 13:49:56 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "mlx.h"
+#include <stdio.h>
 
-void	load_image(t_vars *vars, t_img *img, char *path)
+static int	load_image(t_vars *vars, t_img *img, char *path)
 {
+	// img->img = mlx_png_file_to_image(vars->mlx, path, &img->img_width, &img->img_height);
 	img->img = mlx_xpm_file_to_image(vars->mlx, path, &img->img_width,
 			&img->img_height);
+	if (!img->img)
+	{
+		err("load_image", "mlx_xpm_file_to_image failed");
+		return (EXIT_FAILURE);
+	}
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
 			&img->line_length, &img->endian);
+	return (EXIT_SUCCESS);
 }
 
-void	init(t_vars *vars)
+int	init(t_vars *vars)
 {
 	int	i;
 	int	j;
@@ -67,17 +75,33 @@ void	init(t_vars *vars)
 	// {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	// {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	// };
-
 	vars->mlx = mlx_init();
+	if (!vars->mlx)
+	{
+		err("init", "failed mlx_init");
+		return (EXIT_FAILURE);
+	}
 	vars->win = mlx_new_window(vars->mlx, WIDTH, HEIGHT, "cub3d");
+	if (!vars->win)
+	{
+		err("init", "failed mlx_new_window");
+		free(vars->mlx);
+		return (EXIT_FAILURE);
+	}
 
 	vars->ray = (t_ray *)calloc(1, sizeof(t_ray));
-	// vars->map = (int **)calloc(ROWS, sizeof(int *));
 	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
 
 	// 描画バッファの初期化
 	vars->buffer = (t_img *)calloc(1, sizeof(t_img));
 	vars->buffer->img = mlx_new_image(vars->mlx, WIDTH, HEIGHT);
+	if (!vars->buffer->img)
+	{
+		err("init", "failed mlx_new_image");
+		mlx_destroy_window(vars->mlx, vars->win);
+		free(vars->mlx);
+		return (EXIT_FAILURE);
+	}
 	vars->buffer->addr = mlx_get_data_addr(vars->buffer->img,
 			&vars->buffer->bits_per_pixel, &vars->buffer->line_length,
 			&vars->buffer->endian);
@@ -85,7 +109,15 @@ void	init(t_vars *vars)
 	// 画像のロードとピクセルデータの取得
 	k = -1;
 	while (++k < 4)
-		load_image(vars, &vars->tile[k], path[k]);
+		if (load_image(vars, &vars->tile[k], path[k]) == EXIT_FAILURE)
+		{
+			while (--k >= 0)
+				mlx_destroy_image(vars->mlx, vars->tile[k].img);
+			mlx_destroy_image(vars->mlx, vars->buffer->img);
+			mlx_destroy_window(vars->mlx, vars->win);
+			free(vars->mlx);
+			return (EXIT_FAILURE);
+		}
 	vars->player = (t_player *)calloc(1, sizeof(t_player));
 	vars->player->pos = (t_vector2d){22.0, 11.5};
 	vars->player->dir = (t_vector2d){-1.0, 0.0};
@@ -93,7 +125,6 @@ void	init(t_vars *vars)
 	vars->player->move_speed = 0.05;
 	vars->player->rot_speed = 0.05;
 	i = 0;
-	// vars->map = map;
 	while (i < ROWS)
 	{
 		j = 0;
@@ -104,4 +135,5 @@ void	init(t_vars *vars)
 		}
 		i++;
 	}
+	return (EXIT_SUCCESS);
 }

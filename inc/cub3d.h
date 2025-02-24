@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/23 20:03:54 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/24 13:26:48 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ typedef struct s_vars
 	t_img		tile[4];
 }				t_vars;
 
-void			init(t_vars *vars);
+void	err(char *function_name, const char *msg);
+int				init(t_vars *vars);
 int				raycasting(t_vars *vars);
 void			draw_buffer(t_vars *vars, int x);
 void			draw(t_vars *vars);
