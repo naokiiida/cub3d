@@ -5,12 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/02/25 10:07:21 by naokiiida        ###   ########.fr       */
+/*   Created: 2025/02/23 23:05:55 by naokiiida         #+#    #+#             */
+/*   Updated: 2025/02/25 16:05:53 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
+#define VISITED 9
 #include "cub3d.h"
 #include "get_next_line.h"
 #include "libft.h"
@@ -22,6 +23,7 @@
 //{
 //	system("leaks -q a.out");
 //}
+void	print_map(int **map, t_grid map_size);
 
 int	err(char *function_name, const char *msg)
 {
@@ -32,33 +34,71 @@ int	err(char *function_name, const char *msg)
 	return (EXIT_FAILURE);
 }
 
-// int flood_recursive(int **map, int x, int y, t_vars *vars)
-// {
-// 	if (x > vars->map_size.x || y > vars->map_size.y || x < 0 || y < 0)
-// 		return (EXIT_FAILURE);
-// 	if (map[x][y] == 1)
-// 		return (EXIT_SUCCESS);
-// 	if (map[x][y] == 2)
-// 	{
-// 		map[x][y] = 1;
-// 		flood_recursive(map, x + 1, y, vars);
-// 		flood_recursive(map, x - 1, y, vars);
-// 		flood_recursive(map, x, y + 1, vars);
-// 		flood_recursive(map, x, y - 1, vars);
-// 	}
-// 	return (EXIT_SUCCESS);
-// }
+int	flood_recursive(int **map, int x, int y, t_vars *vars)
+{
+	if (x >= vars->map_size.x || y >= vars->map_size.y || x < 0 || y < 0)
+		return (err("flood_recursive", "flooded boundaries"));
+	if (map[y][x] == 1 || map[y][x] == VISITED)
+		return (EXIT_SUCCESS);
+	if (map[y][x] == 2)
+		return (err("flood_recursive", "empty space"));
+	map[y][x] = VISITED;
+	if (flood_recursive(map, x + 1, y, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (flood_recursive(map, x - 1, y, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (flood_recursive(map, x, y + 1, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (flood_recursive(map, x, y - 1, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
 
-// int floodfill(int **map, t_vars *vars)
-// {
-// 	int x;
-// 	int y;
+int	floodfill(int **map, t_vars *vars)
+{
+	int		x;
+	int		y;
+	_Bool	found_start;
 
-// 	x = 0;
-// 	y = 0;
-// 	flood_recursive(map, x, y, vars);
-// 	return (EXIT_SUCCESS);
-// }
+	x = 0;
+	y = 0;
+	found_start = false;
+	// starting points
+	while (y < vars->map_size.y)
+	{
+		x = 0;
+		while (x < vars->map_size.x)
+		{
+			if (map[y][x] == 0)
+			{
+				found_start = true;
+				if (flood_recursive(map, x, y, vars) == EXIT_FAILURE)
+					return (EXIT_FAILURE);
+				break ;
+			}
+			x++;
+		}
+		if (found_start)
+			break ;
+		y++;
+	}
+	printf("\n---------flooded result-----------\n");
+	print_map(map, vars->map_size);
+	// final full check
+	y = 0;
+	while (y < vars->map_size.y)
+	{
+		x = 0;
+		while (x < vars->map_size.x)
+		{
+			if (map[y][x] == 0)
+				return (err("floodfill", "unvisited zero found"));
+			x++;
+		}
+		y++;
+	}
+	return (EXIT_SUCCESS);
+}
 
 static int	fill_map(char *map_data, int **map, t_vars *vars)
 {
@@ -111,7 +151,6 @@ int	init_map(int ***map, int rows, int cols)
 	}
 	return (EXIT_SUCCESS);
 }
-
 int	set_player(t_vars *vars, int x, int y, char c)
 {
 	t_player	*p;
@@ -360,9 +399,8 @@ int	get_input(char *file, t_vars *vars)
 		return (EXIT_FAILURE);
 	free(mapData);
 	print_map(map, vars->map_size);
-
-	// if (floodfill(map, vars) == EXIT_FAILURE)
-	// 	return (EXIT_FAILURE);
+	if (floodfill(map, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
