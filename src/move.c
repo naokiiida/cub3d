@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 00:35:01 by niida             #+#    #+#             */
-/*   Updated: 2025/02/23 18:32:54 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 22:49:57 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -45,9 +45,9 @@ int	key_press(int key, t_vars *vars)
 	if (key == KEY_D)
 		move_player(vars->map, vars->player, 1, vars->player->plane);
 	if (key == KEY_LEFT)
-		key_rotate(vars->player, 1);
-	if (key == KEY_RIGHT)
 		key_rotate(vars->player, -1);
+	if (key == KEY_RIGHT)
+		key_rotate(vars->player, 1);
 	if (key == KEY_ESC)
 		close_win(vars);
 	printf("pos: %lf,%lf\tdir: %lf,%lf\tplane: %lf,%lf\n",

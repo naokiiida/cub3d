@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 23:05:55 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 20:47:05 by niida            ###   ########.fr       */
+/*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
+/*   Updated: 2025/02/25 22:44:29 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
@@ -64,8 +64,8 @@ Finally, check the whole border for lefover 2
 */
 static int	floodfill(int **map, t_vars *vars)
 {
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 
 	x = 0;
 	y = 0;
@@ -148,14 +148,28 @@ static int	set_player(t_vars *vars, int x, int y, char c)
 	if (!(p->pos.x == 0 && p->pos.y == 0) && !(p->dir.x == 0 && p->dir.y == 0))
 		return (err("load_map", "player already positioned"));
 	if (c == 'N')
-		p->dir = (t_vector2d){0, 1};
-	else if (c == 'S')
+	{
 		p->dir = (t_vector2d){0, -1};
+		p->plane = (t_vector2d){0.66, 0};
+	}
+	else if (c == 'S')
+	{
+		p->dir = (t_vector2d){0, 1};
+		p->plane = (t_vector2d){-0.66, 0};
+	}
 	else if (c == 'W')
+	{
 		p->dir = (t_vector2d){-1, 0};
+		p->plane = (t_vector2d){0, -0.66};
+	}
 	else if (c == 'E')
+	{
 		p->dir = (t_vector2d){1, 0};
+		p->plane = (t_vector2d){0, 0.66};
+	}
 	p->pos = (t_vector2d){x, y};
+	p->move_speed = 0.05;
+	p->rot_speed = 0.05;
 	return (EXIT_SUCCESS);
 }
 
@@ -385,7 +399,8 @@ int	get_input(char *file, t_vars *vars)
 	// printf("\nclose fd\n");
 	if (load_map(map_data, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (init_map(&vars->map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
+	if (init_map(&vars->map, vars->map_size.y,
+			vars->map_size.x) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (fill_map(map_data, vars->map, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 18:36:14 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/24 13:49:56 by niida            ###   ########.fr       */
+/*   Created: 2025/02/10 18:36:14 by niida             #+#    #+#             */
+/*   Updated: 2025/02/25 23:01:18 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,6 @@ int	init(t_vars *vars)
 	// vars->player = (t_player *)calloc(1, sizeof(t_player));
 	// vars->player->pos = (t_vector2d){22.0, 11.5};
 	// vars->player->dir = (t_vector2d){-1.0, 0.0};
-	// vars->player->plane = (t_vector2d){0.0, 0.66};
-	// vars->player->move_speed = 0.05;
-	// vars->player->rot_speed = 0.05;
 	// i = 0;
 	// while (i < vars->map_size.y)
 	// {
