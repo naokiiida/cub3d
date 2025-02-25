@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/02/24 21:00:33 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 10:07:21 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
@@ -59,27 +59,29 @@ int	err(char *function_name, const char *msg)
 // 	flood_recursive(map, x, y, vars);
 // 	return (EXIT_SUCCESS);
 // }
+
+static int	fill_map(char *map_data, int **map, t_vars *vars)
 {
 	int	x;
 	int	y;
 
 	y = -1;
-	while (++y < grid.y)
+	while (++y < vars->map_size.y)
 	{
 		x = -1;
-		while (++x < grid.x && *mapData)
+		while (++x < vars->map_size.x && *map_data)
 		{
-			if (*mapData == '\n')
-				mapData++;
-			if (*mapData == '0')
+			if (*map_data == '\n')
+				map_data++;
+			if (*map_data == '0')
 				map[y][x] = 0;
-			else if (*mapData == '1')
+			else if (*map_data == '1')
 				map[y][x] = 1;
-			else if (*mapData == ' ')
+			else if (*map_data == ' ')
 				map[y][x] = 2;
 			else
 				map[y][x] = 0;
-			mapData++;
+			map_data++;
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -110,9 +112,9 @@ int	init_map(int **map, int rows, int cols)
 
 int	set_player(t_player *player, int x, int y, char c)
 {
-	if ((player->pos.x == 0 && player->pos.y == 0) && (player->dir.x == 0
-			&& player->dir.y == 0))
-		return (err("load_map", "player not positioned"));
+	if (!(player->pos.x == 0 && player->pos.y == 0)
+		&& !(player->dir.x == 0 && player->dir.y == 0))
+		return (err("load_map", "player already positioned"));
 	if (c == 'N')
 		player->dir = (t_vector2d){0, 1};
 	else if (c == 'S')
@@ -125,20 +127,20 @@ int	set_player(t_player *player, int x, int y, char c)
 	return (EXIT_SUCCESS);
 }
 
-static int	process_char(char c, t_grid *grid, int *curr_cols, t_player *player)
+static int	process_map_cell(char c, t_vars *vars, int *curr_cols, t_player *player)
 {
 	if (ft_strchr("01 ", c))
 		(*curr_cols)++;
 	else if (c == '\n')
 	{
-		grid->y++;
-		if (grid->x < *curr_cols)
-			grid->x = *curr_cols;
+		vars->map_size.y++;
+		if (vars->map_size.x < *curr_cols)
+			vars->map_size.x = *curr_cols;
 		*curr_cols = 0;
 	}
 	else if (ft_strchr("NSWE", c))
 	{
-		if (set_player(player, grid->y, grid->x, c) == EXIT_FAILURE)
+		if (set_player(player, vars->map_size.y, *curr_cols, c) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		(*curr_cols)++;
 	}
@@ -147,22 +149,21 @@ static int	process_char(char c, t_grid *grid, int *curr_cols, t_player *player)
 	return (EXIT_SUCCESS);
 }
 
-int	load_map(char *mapData, int **map, t_player *player)
+int	load_map(char *mapData, int **map, t_vars *vars)
 {
-	t_grid	grid;
 	int		curr_cols;
 
-	grid = (t_grid){0, 0};
+	vars->map_size = (t_grid){0, 0};
 	curr_cols = 0;
 	while (*mapData)
 	{
-		if (process_char(*mapData, &grid, &curr_cols, player) == EXIT_FAILURE)
+		if (process_map_cell(*mapData, vars, &curr_cols, vars->player) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		mapData++;
 	}
-	if (init_map(map, grid.y, grid.x) == EXIT_FAILURE)
+	if (init_map(map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	return (fill_map(mapData, map, grid));
+	return (fill_map(mapData, map, vars));
 }
 
 int	count_strings(char **arr)
@@ -257,7 +258,7 @@ int	get_input(char *file, t_vars *vars)
 	_Bool	map_done;
 	_Bool	blank;
 	char	*mapData;
-	int		**map;
+	int		**map = NULL;
 
 	fd = -1;
 	all_elements = 0;
@@ -306,6 +307,7 @@ int	get_input(char *file, t_vars *vars)
 		blank = 0;
 	}
 	mapData = NULL;
+	map_done = 0;
 	while (!map_done)
 	{
 		line = get_next_line(fd);
@@ -320,9 +322,25 @@ int	get_input(char *file, t_vars *vars)
 		mapData = ft_strjoin(mapData, line);
 	}
 	close(fd);
-	if (load_map(mapData, map, vars->player) == EXIT_FAILURE)
+	printf("\nclose fd\n");
+	if (load_map(mapData, map, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	free(mapData);
+	// int i;
+	// int j;
+
+	// i = 0;
+	// while (i < vars->map_size.y)
+	// {
+	// 	j = 0;
+	// 	while (j < vars->map_size.x)
+	// 	{
+	// 		printf("%d", map[i][j]);
+	// 		j++;
+	// 	}
+	// 	printf("\n");
+	// 	i++;
+	// }
 	// if (floodfill(map, vars) == EXIT_FAILURE)
 	// 	return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
