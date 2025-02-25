@@ -69,43 +69,43 @@ static int	fill_map(char *map_data, int **map, t_vars *vars)
 	while (++y < vars->map_size.y)
 	{
 		x = -1;
-		printf("fill_map:\n");
-		while (++x < vars->map_size.x && *map_data)
+		while (*map_data && *map_data != '\n')
 		{
-			if (*map_data == '\n')
-				map_data++;
+			++x;
 			if (*map_data == '0')
 				map[y][x] = 0;
 			else if (*map_data == '1')
 				map[y][x] = 1;
 			else if (*map_data == ' ')
-				map[y][x] = 2;
+				map[y][x] = 0;
 			else
 				map[y][x] = 0;
-			printf("%c", map[y][x] + '0');
 			map_data++;
 		}
+		map_data++;
+		while (++x < vars->map_size.x)
+			map[y][x] = 0;
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	init_map(int **map, int rows, int cols)
+int	init_map(int ***map, int rows, int cols)
 {
 	int	i;
 
-	map = malloc(sizeof(int *) * rows);
-	if (!map)
-		return (err("load_map", "malloc failed for map rows"));
+	*map = malloc(sizeof(int *) * rows);
+	if (!(*map))
+		return (err("init_map", "malloc failed for map rows"));
 	i = 0;
 	while (i < rows)
 	{
-		map[i] = malloc(sizeof(int) * cols);
-		if (!map[i])
+		(*map)[i] = malloc(sizeof(int) * cols);
+		if (!(*map)[i])
 		{
 			while (i > 0)
-				free(map[--i]);
-			free(map);
-			return (err("load_map", "malloc failed for map columns"));
+				free((*map)[--i]);
+			free(*map);
+			return (err("init_map", "malloc failed for map columns"));
 		}
 		i++;
 	}
@@ -129,7 +129,7 @@ int	set_player(t_player *player, int x, int y, char c)
 	return (EXIT_SUCCESS);
 }
 
-static int	process_map_cell(char c, t_vars *vars, int *curr_cols, t_player *player)
+static int	process_cell(char c, t_vars *vars, int *curr_cols, t_player *player)
 {
 	if (ft_strchr("01 ", c))
 		(*curr_cols)++;
@@ -151,7 +151,7 @@ static int	process_map_cell(char c, t_vars *vars, int *curr_cols, t_player *play
 	return (EXIT_SUCCESS);
 }
 
-int	load_map(char *mapData, int **map, t_vars *vars)
+int	load_map(char *mapData, t_vars *vars)
 {
 	int		curr_cols;
 
@@ -159,7 +159,7 @@ int	load_map(char *mapData, int **map, t_vars *vars)
 	curr_cols = 0;
 	while (*mapData)
 	{
-		if (process_map_cell(*mapData, vars, &curr_cols, vars->player) == EXIT_FAILURE)
+		if (process_cell(*mapData, vars, &curr_cols, vars->player) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		mapData++;
 	}
@@ -169,10 +169,7 @@ int	load_map(char *mapData, int **map, t_vars *vars)
 		if (vars->map_size.x < curr_cols)
 			vars->map_size.x = curr_cols;
 	}
-
-	if (init_map(map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	return (fill_map(mapData, map, vars));
+	return (EXIT_SUCCESS);
 }
 
 int	count_strings(char **arr)
@@ -259,6 +256,25 @@ int	validate_file(char *file)
 	return (EXIT_SUCCESS);
 }
 
+void	print_map(int **map, t_grid map_size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map_size.y)
+	{
+		j = 0;
+		while (j < map_size.x)
+		{
+			printf("%d", map[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+}
+
 int	get_input(char *file, t_vars *vars)
 {
 	char	*line;
@@ -267,8 +283,9 @@ int	get_input(char *file, t_vars *vars)
 	_Bool	map_done;
 	_Bool	blank;
 	char	*mapData;
-	int		**map = NULL;
+	int		**map;
 
+	map = NULL;
 	fd = -1;
 	all_elements = 0;
 	if (validate_file(file) == EXIT_FAILURE)
@@ -319,6 +336,7 @@ int	get_input(char *file, t_vars *vars)
 	map_done = 0;
 	while (!map_done)
 	{
+		mapData = ft_strjoin(mapData, line);
 		line = get_next_line(fd);
 		printf("%s", line);
 		if (line == NULL)
@@ -328,28 +346,18 @@ int	get_input(char *file, t_vars *vars)
 			close(fd);
 			return (err("get_input", "map is split"));
 		}
-		mapData = ft_strjoin(mapData, line);
 	}
 	close(fd);
 	printf("\nclose fd\n");
-	if (load_map(mapData, map, vars) == EXIT_FAILURE)
+	if (load_map(mapData, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (init_map(&map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (fill_map(mapData, map, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	free(mapData);
-	// int i;
-	// int j;
+	print_map(map, vars->map_size);
 
-	// i = 0;
-	// while (i < vars->map_size.y)
-	// {
-	// 	j = 0;
-	// 	while (j < vars->map_size.x)
-	// 	{
-	// 		printf("%d", map[i][j]);
-	// 		j++;
-	// 	}
-	// 	printf("\n");
-	// 	i++;
-	// }
 	// if (floodfill(map, vars) == EXIT_FAILURE)
 	// 	return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
