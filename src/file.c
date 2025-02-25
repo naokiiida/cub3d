@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 18:48:56 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 20:47:05 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
@@ -23,18 +23,18 @@
 //{
 //	system("leaks -q a.out");
 //}
-void	print_map(int **map, t_grid map_size);
+static void	print_map(int **map, t_grid map_size);
 
-int	err(char *function_name, const char *msg)
-{
-	ft_putendl_fd("Error", 2);
-	ft_putstr_fd(function_name, 2);
-	ft_putstr_fd(":\t", 2);
-	perror(msg);
-	return (EXIT_FAILURE);
-}
+// static int	err(char *function_name, const char *msg)
+// {
+// 	ft_putendl_fd("Error", 2);
+// 	ft_putstr_fd(function_name, 2);
+// 	ft_putstr_fd(":\t", 2);
+// 	perror(msg);
+// 	return (EXIT_FAILURE);
+// }
 
-int	flood_recursive(int **map, int x, int y, t_vars *vars)
+static int	flood_recursive(int **map, int x, int y, t_vars *vars)
 {
 	if (x >= vars->map_size.x || y >= vars->map_size.y || x < 0 || y < 0
 		|| map[y][x] == 1 || map[y][x] == VISITED)
@@ -62,7 +62,7 @@ if we find a 2,
 - if we find a 0 - failure.
 Finally, check the whole border for lefover 2
 */
-int	floodfill(int **map, t_vars *vars)
+static int	floodfill(int **map, t_vars *vars)
 {
 	int		x;
 	int		y;
@@ -117,7 +117,7 @@ static int	fill_map(char *map_data, int **map, t_vars *vars)
 	return (EXIT_SUCCESS);
 }
 
-int	init_map(int ***map, int rows, int cols)
+static int	init_map(int ***map, int rows, int cols)
 {
 	int	i;
 
@@ -139,7 +139,8 @@ int	init_map(int ***map, int rows, int cols)
 	}
 	return (EXIT_SUCCESS);
 }
-int	set_player(t_vars *vars, int x, int y, char c)
+
+static int	set_player(t_vars *vars, int x, int y, char c)
 {
 	t_player	*p;
 
@@ -181,7 +182,7 @@ static int	process_cell(char c, t_vars *vars, int *curr_cols)
 	return (EXIT_SUCCESS);
 }
 
-int	load_map(char *mapData, t_vars *vars)
+static int	load_map(char *mapData, t_vars *vars)
 {
 	int	curr_cols;
 
@@ -202,7 +203,7 @@ int	load_map(char *mapData, t_vars *vars)
 	return (EXIT_SUCCESS);
 }
 
-int	count_strings(char **arr)
+static int	count_strings(char **arr)
 {
 	int	count;
 
@@ -212,7 +213,7 @@ int	count_strings(char **arr)
 	return (count);
 }
 
-int	parse_rgb(int *color, char *input)
+static int	parse_rgb(int *color, char *input)
 {
 	char	**rgb;
 	int		i;
@@ -236,7 +237,7 @@ int	parse_rgb(int *color, char *input)
 	return (EXIT_SUCCESS);
 }
 
-int	check_elements(char *line, t_texture *tex, char *path[4])
+static int	check_elements(char *line, t_texture *tex, char *path[4])
 {
 	char		**kv;
 	static char	*keys[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
@@ -248,7 +249,7 @@ int	check_elements(char *line, t_texture *tex, char *path[4])
 		return (err("check_elements", "Invalid element format"));
 	i = -1;
 	status = 0;
-	while (keys[++i] && status == 0 )
+	while (keys[++i] && status == 0)
 	{
 		if (strcmp(kv[0], keys[i]) == 0)
 		{
@@ -266,7 +267,7 @@ int	check_elements(char *line, t_texture *tex, char *path[4])
 	return (status);
 }
 
-void	remove_newline(char *line)
+static void	remove_newline(char *line)
 {
 	int	i;
 
@@ -276,7 +277,7 @@ void	remove_newline(char *line)
 	line[--i] = '\0';
 }
 
-int	validate_file(char *file)
+static int	validate_file(char *file)
 {
 	char	*ext;
 
@@ -288,7 +289,7 @@ int	validate_file(char *file)
 	return (EXIT_SUCCESS);
 }
 
-void	print_map(int **map, t_grid map_size)
+static void	print_map(int **map, t_grid map_size)
 {
 	int	i;
 	int	j;
@@ -314,19 +315,19 @@ int	get_input(char *file, t_vars *vars)
 	_Bool	all_elements;
 	_Bool	map_done;
 	_Bool	blank;
-	char	*mapData;
-	int		**map;
+	char	*map_data;
 
-	map = NULL;
 	fd = -1;
 	all_elements = 0;
+	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
+	vars->player = (t_player *)calloc(1, sizeof(t_player));
 	if (validate_file(file) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	printf("-----fopen-----\n");
+	// printf("-----fopen-----\n");
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (err("get_input", strerror(errno)));
-	printf(" fd=%d\n", fd);
+	// printf(" fd=%d\n", fd);
 	while (!all_elements)
 	{
 		line = get_next_line(fd);
@@ -346,6 +347,7 @@ int	get_input(char *file, t_vars *vars)
 			return (err("get_input", "Failed to parse elements"));
 		}
 		free(line);
+
 		all_elements = vars->texture->ceiling_color
 			&& vars->texture->floor_color && vars->path[0] && vars->path[1]
 			&& vars->path[2] && vars->path[3];
@@ -364,11 +366,11 @@ int	get_input(char *file, t_vars *vars)
 			continue ;
 		blank = 0;
 	}
-	mapData = NULL;
+	map_data = NULL;
 	map_done = 0;
 	while (!map_done)
 	{
-		mapData = ft_strjoin(mapData, line);
+		map_data = ft_strjoin(map_data, line);
 		line = get_next_line(fd);
 		printf("%s", line);
 		if (line == NULL)
@@ -380,34 +382,39 @@ int	get_input(char *file, t_vars *vars)
 		}
 	}
 	close(fd);
-	printf("\nclose fd\n");
-	if (load_map(mapData, vars) == EXIT_FAILURE)
+	// printf("\nclose fd\n");
+	if (load_map(map_data, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (init_map(&map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
+	if (init_map(&vars->map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (fill_map(mapData, map, vars) == EXIT_FAILURE)
+	if (fill_map(map_data, vars->map, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	free(mapData);
-	print_map(map, vars->map_size);
-	if (floodfill(map, vars) == EXIT_FAILURE)
+	free(map_data);
+	// print_map(map, vars->map_size);
+	if (floodfill(vars->map, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	main(void)
-{
-	t_vars	vars;
-	int		status;
+// int	main(int argc, char **argv)
+// {
+// 	t_vars	vars;
+// 	int		status;
 
-	vars.texture = (t_texture *)calloc(1, sizeof(t_texture));
-	vars.player = (t_player *)calloc(1, sizeof(t_player));
-	status = get_input("./cub3D_map_tester/maps/test_valid_map.cub", &vars);
-	printf("-------result-------\n");
-	printf("paths:\n%s\n%s\n%s\n%s\n", vars.path[0], vars.path[1], vars.path[2],
-		vars.path[3]);
-	printf("ceiling: 0x%06X floor: 0x%06X\n", vars.texture->ceiling_color,
-		vars.texture->floor_color);
-	printf("player pos: (%f,%f)\n", vars.player->pos.x, vars.player->pos.y);
-	printf("map size: (%d,%d)\n", vars.map_size.x, vars.map_size.y);
-	return (status);
-}
+// 	if (argc != 2)
+// 	{
+// 		printf("usage: cub3D <single.cub>\n");
+// 		return (1);
+// 	}
+// 	vars.texture = (t_texture *)calloc(1, sizeof(t_texture));
+// 	vars.player = (t_player *)calloc(1, sizeof(t_player));
+// 	status = get_input(argv[1], &vars);
+// 	printf("-------result-------\n");
+// 	printf("paths:\n%s\n%s\n%s\n%s\n", vars.path[0], vars.path[1], vars.path[2],
+// 		vars.path[3]);
+// 	printf("ceiling: 0x%06X floor: 0x%06X\n", vars.texture->ceiling_color,
+// 		vars.texture->floor_color);
+// 	printf("player pos: (%f,%f)\n", vars.player->pos.x, vars.player->pos.y);
+// 	printf("map size: (%d,%d)\n", vars.map_size.x, vars.map_size.y);
+// 	return (status);
+// }

@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 09:40:39 by naokiiida        ###   ########.fr       */
+/*   Updated: 2025/02/25 20:13:52 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ enum			e_keys
 };
 
 // # define TILE_SIZE 64
-# define ROWS 24
-# define COLS 24
+// # define ROWS 24
+// # define COLS 24
 // # define ROWS 11
 // # define COLS 15
 # define WIDTH 640
@@ -151,7 +151,7 @@ typedef struct s_vars
 	void		*win;
 	t_img		*buffer;
 	t_grid		map_size;
-	int			map[ROWS][COLS];
+	int			**map;
 	t_player	*player;
 	t_ray		*ray;
 	t_texture	*texture;

@@ -6,14 +6,14 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/23 19:56:39 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 21:06:59 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // 壁に当たったか判定
-static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
+static bool	is_hit_wall(int **map, t_grid grid)
 {
 	if (map[grid.x][grid.y] != MAP_BLANK)
 		return (true);
@@ -21,7 +21,7 @@ static bool	is_hit_wall(int map[ROWS][COLS], t_grid grid)
 }
 
 // DDAアルゴリズムによる壁の衝突判定
-void	perform_dda(t_ray *ray, int map[ROWS][COLS])
+void	perform_dda(t_ray *ray, int **map)
 {
 	while (!is_hit_wall(map, ray->grid))
 	{

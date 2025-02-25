@@ -15,7 +15,7 @@
  * Scale direction or plane vector by move speed and direction (+1 or -1)
  * Check collision
  */
-void	move_player(int map[ROWS][COLS], t_player *p, int dir, t_vector2d v)
+void	move_player(int **map, t_player *p, int dir, t_vector2d v)
 {
 	t_vector2d	movement;
 	t_vector2d	next_pos;
