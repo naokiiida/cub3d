@@ -77,14 +77,14 @@ static int	fill_map(char *map_data, int **map, t_vars *vars)
 			else if (*map_data == '1')
 				map[y][x] = 1;
 			else if (*map_data == ' ')
-				map[y][x] = 0;
+				map[y][x] = 2;
 			else
 				map[y][x] = 0;
 			map_data++;
 		}
 		map_data++;
 		while (++x < vars->map_size.x)
-			map[y][x] = 0;
+			map[y][x] = 2;
 	}
 	return (EXIT_SUCCESS);
 }
