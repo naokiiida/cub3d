@@ -6,10 +6,11 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/02/25 22:44:29 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 23:54:14 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
+
 #define EXIT_SUCCESS 0
 #define VISITED 9
 #include "cub3d.h"
@@ -322,26 +323,12 @@ static void	print_map(int **map, t_grid map_size)
 	}
 }
 
-int	get_input(char *file, t_vars *vars)
+int	read_elements(int fd, t_vars *vars)
 {
 	char	*line;
-	int		fd;
 	_Bool	all_elements;
-	_Bool	map_done;
-	_Bool	blank;
-	char	*map_data;
 
-	fd = -1;
 	all_elements = 0;
-	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
-	vars->player = (t_player *)calloc(1, sizeof(t_player));
-	if (validate_file(file) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	// printf("-----fopen-----\n");
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (err("get_input", strerror(errno)));
-	// printf(" fd=%d\n", fd);
 	while (!all_elements)
 	{
 		line = get_next_line(fd);
@@ -349,7 +336,7 @@ int	get_input(char *file, t_vars *vars)
 		if (line == NULL)
 		{
 			close(fd);
-			return (err("get_input", "Failed to read line"));
+			return (err("read_elements", "Failed to read line"));
 		}
 		if (strcmp(line, "\n") == 0)
 			continue ;
@@ -358,14 +345,21 @@ int	get_input(char *file, t_vars *vars)
 		{
 			free(line);
 			close(fd);
-			return (err("get_input", "Failed to parse elements"));
+			return (err("read_elements", "Failed to parse elements"));
 		}
 		free(line);
-
 		all_elements = vars->texture->ceiling_color
 			&& vars->texture->floor_color && vars->path[0] && vars->path[1]
 			&& vars->path[2] && vars->path[3];
 	}
+	return (EXIT_SUCCESS);
+}
+
+int	skip_blank_lines(int fd)
+{
+	char	*line;
+	_Bool	blank;
+
 	blank = 1;
 	while (blank)
 	{
@@ -374,17 +368,23 @@ int	get_input(char *file, t_vars *vars)
 		if (line == NULL)
 		{
 			close(fd);
-			return (err("get_input", "Where's the map?"));
+			return (err("skip_blank_lines", "Where's the map?"));
 		}
 		if (strcmp(line, "\n") == 0)
 			continue ;
 		blank = 0;
 	}
+	return (EXIT_SUCCESS);
+}
+
+char	*read_map_data(int fd)
+{
+	char	*line;
+	char	*map_data;
+
 	map_data = NULL;
-	map_done = 0;
-	while (!map_done)
+	while (1)
 	{
-		map_data = ft_strjoin(map_data, line);
 		line = get_next_line(fd);
 		printf("%s", line);
 		if (line == NULL)
@@ -392,20 +392,42 @@ int	get_input(char *file, t_vars *vars)
 		if (strcmp(line, "\n") == 0)
 		{
 			close(fd);
-			return (err("get_input", "map is split"));
+			err("read_map_data", "map is split");
+			return (NULL);
 		}
+		map_data = ft_strjoin(map_data, line);
 	}
+	return (map_data);
+}
+
+int	get_input(char *file, t_vars *vars)
+{
+	int		fd;
+	char	*map_data;
+
+	fd = -1;
+	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
+	vars->player = (t_player *)calloc(1, sizeof(t_player));
+	if (validate_file(file) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return (err("get_input", strerror(errno)));
+	if (read_elements(fd, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (skip_blank_lines(fd) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	map_data = read_map_data(fd);
 	close(fd);
-	// printf("\nclose fd\n");
+	if (!map_data)
+		return (EXIT_FAILURE);
 	if (load_map(map_data, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (init_map(&vars->map, vars->map_size.y,
-			vars->map_size.x) == EXIT_FAILURE)
+	if (init_map(&vars->map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (fill_map(map_data, vars->map, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	free(map_data);
-	// print_map(map, vars->map_size);
 	if (floodfill(vars->map, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
