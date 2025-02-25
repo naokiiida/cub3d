@@ -256,27 +256,29 @@ int	check_elements(char *line, t_texture *tex, char *path[4])
 	char		**kv;
 	static char	*keys[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
 	int			i;
+	int			status;
 
 	kv = ft_split(line, ' ');
 	if (count_strings(kv) != 2)
 		return (err("check_elements", "Invalid element format"));
 	i = -1;
-	while (keys[++i])
+	status = 0;
+	while (keys[++i] && status == 0 )
 	{
 		if (strcmp(kv[0], keys[i]) == 0)
 		{
 			if (i < 4)
 				path[i] = ft_strdup(kv[1]);
 			else if (i == 5)
-				parse_rgb(&tex->floor_color, kv[1]);
+				status = parse_rgb(&tex->floor_color, kv[1]);
 			else
-				parse_rgb(&tex->ceiling_color, kv[1]);
+				status = parse_rgb(&tex->ceiling_color, kv[1]);
 		}
 	}
 	i = 0;
 	while (kv[i])
 		free(kv[i++]);
-	return (EXIT_SUCCESS);
+	return (status);
 }
 
 void	remove_newline(char *line)
