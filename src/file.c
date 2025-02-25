@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 16:05:53 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 18:48:56 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
@@ -37,11 +37,11 @@ int	err(char *function_name, const char *msg)
 int	flood_recursive(int **map, int x, int y, t_vars *vars)
 {
 	if (x >= vars->map_size.x || y >= vars->map_size.y || x < 0 || y < 0)
-		return (err("flood_recursive", "flooded boundaries"));
+		return (EXIT_SUCCESS);
 	if (map[y][x] == 1 || map[y][x] == VISITED)
 		return (EXIT_SUCCESS);
-	if (map[y][x] == 2)
-		return (err("flood_recursive", "empty space"));
+	if (map[y][x] == 0)
+		return (err("flood_recursive", "hole in the wall"));
 	map[y][x] = VISITED;
 	if (flood_recursive(map, x + 1, y, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
@@ -54,45 +54,48 @@ int	flood_recursive(int **map, int x, int y, t_vars *vars)
 	return (EXIT_SUCCESS);
 }
 
+/**
+instead of infill, flood from the outside. flood from 2.
+if we find a 1, success
+if we find a 0, immediate failure
+if we find a 2,
+- recurse neighbouring cells until a wall is found.
+- if we find a 0, again, failure.
+- if we end up outside the map, failure
+Finally, check the whole border for lefover 2
+*/
 int	floodfill(int **map, t_vars *vars)
 {
 	int		x;
 	int		y;
-	_Bool	found_start;
 
 	x = 0;
 	y = 0;
-	found_start = false;
-	// starting points
 	while (y < vars->map_size.y)
 	{
 		x = 0;
 		while (x < vars->map_size.x)
 		{
-			if (map[y][x] == 0)
+			if (map[y][x] == 2)
 			{
-				found_start = true;
 				if (flood_recursive(map, x, y, vars) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
 				break ;
 			}
 			x++;
 		}
-		if (found_start)
-			break ;
 		y++;
 	}
 	printf("\n---------flooded result-----------\n");
 	print_map(map, vars->map_size);
-	// final full check
 	y = 0;
 	while (y < vars->map_size.y)
 	{
 		x = 0;
 		while (x < vars->map_size.x)
 		{
-			if (map[y][x] == 0)
-				return (err("floodfill", "unvisited zero found"));
+			if (map[y][x] == 2)
+				return (err("floodfill", "unvisited space found"));
 			x++;
 		}
 		y++;
