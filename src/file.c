@@ -36,9 +36,8 @@ int	err(char *function_name, const char *msg)
 
 int	flood_recursive(int **map, int x, int y, t_vars *vars)
 {
-	if (x >= vars->map_size.x || y >= vars->map_size.y || x < 0 || y < 0)
-		return (EXIT_SUCCESS);
-	if (map[y][x] == 1 || map[y][x] == VISITED)
+	if (x >= vars->map_size.x || y >= vars->map_size.y || x < 0 || y < 0
+		|| map[y][x] == 1 || map[y][x] == VISITED)
 		return (EXIT_SUCCESS);
 	if (map[y][x] == 0)
 		return (err("flood_recursive", "hole in the wall"));
@@ -56,12 +55,11 @@ int	flood_recursive(int **map, int x, int y, t_vars *vars)
 
 /**
 instead of infill, flood from the outside. flood from 2.
-if we find a 1, success
-if we find a 0, immediate failure
+if we find a 1, visited cell, or outside map boundary - success
+if we find a 0, - failure
 if we find a 2,
 - recurse neighbouring cells until a wall is found.
-- if we find a 0, again, failure.
-- if we end up outside the map, failure
+- if we find a 0 - failure.
 Finally, check the whole border for lefover 2
 */
 int	floodfill(int **map, t_vars *vars)
