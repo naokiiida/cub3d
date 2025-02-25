@@ -9,10 +9,11 @@
 /*   Updated: 2025/02/24 21:00:33 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
 #include "cub3d.h"
 #include "get_next_line.h"
 #include "libft.h"
-#include <cstdlib>
 #include <errno.h>
 #include <stdbool.h>
 #include <string.h>
@@ -31,13 +32,33 @@ int	err(char *function_name, const char *msg)
 	return (EXIT_FAILURE);
 }
 
-// TODO:
-int	floodfill(int **map, char)
-{
-	return (EXIT_SUCCESS);
-}
+// int flood_recursive(int **map, int x, int y, t_vars *vars)
+// {
+// 	if (x > vars->map_size.x || y > vars->map_size.y || x < 0 || y < 0)
+// 		return (EXIT_FAILURE);
+// 	if (map[x][y] == 1)
+// 		return (EXIT_SUCCESS);
+// 	if (map[x][y] == 2)
+// 	{
+// 		map[x][y] = 1;
+// 		flood_recursive(map, x + 1, y, vars);
+// 		flood_recursive(map, x - 1, y, vars);
+// 		flood_recursive(map, x, y + 1, vars);
+// 		flood_recursive(map, x, y - 1, vars);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
 
-static int	fill_map(char *mapData, int **map, t_grid grid)
+// int floodfill(int **map, t_vars *vars)
+// {
+// 	int x;
+// 	int y;
+
+// 	x = 0;
+// 	y = 0;
+// 	flood_recursive(map, x, y, vars);
+// 	return (EXIT_SUCCESS);
+// }
 {
 	int	x;
 	int	y;
@@ -302,8 +323,8 @@ int	get_input(char *file, t_vars *vars)
 	if (load_map(mapData, map, vars->player) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	free(mapData);
-	if (floodfill(map, ' ') == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+	// if (floodfill(map, vars) == EXIT_FAILURE)
+	// 	return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -320,6 +341,6 @@ int	main(void)
 		vars.path[3]);
 	printf("ceiling: 0x%06X floor: 0x%06X\n", vars.texture->ceiling_color,
 		vars.texture->floor_color);
-	// printf("player pos: (%f,%f)\n", vars.player->pos.x, vars.player->pos.y);
+	printf("player pos: (%f,%f)\n", vars.player->pos.x, vars.player->pos.y);
 	return (status);
 }

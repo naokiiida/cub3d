@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/24 17:51:11 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 09:40:39 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ typedef struct s_vars
 	void		*mlx;
 	void		*win;
 	t_img		*buffer;
+	t_grid		map_size;
 	int			map[ROWS][COLS];
 	t_player	*player;
 	t_ray		*ray;
