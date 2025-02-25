@@ -6,11 +6,10 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/02/25 23:54:14 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/26 00:18:34 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
-
 #define EXIT_SUCCESS 0
 #define VISITED 9
 #include "cub3d.h"
@@ -268,12 +267,14 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 	{
 		if (strcmp(kv[0], keys[i]) == 0)
 		{
-			if (i < 4)
+			if (i < 4 && !path[i])
 				path[i] = ft_strdup(kv[1]);
-			else if (i == 5)
+			else if (i == 4 && !tex->floor_color)
 				status = parse_rgb(&tex->floor_color, kv[1]);
-			else
+			else if (i == 5 && !tex->ceiling_color)
 				status = parse_rgb(&tex->ceiling_color, kv[1]);
+			else
+				return (err("check_elements", "Already defined"));
 		}
 	}
 	i = 0;
@@ -345,7 +346,7 @@ int	read_elements(int fd, t_vars *vars)
 		{
 			free(line);
 			close(fd);
-			return (err("read_elements", "Failed to parse elements"));
+			return (EXIT_FAILURE);
 		}
 		free(line);
 		all_elements = vars->texture->ceiling_color
