@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 20:13:52 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 23:14:03 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@
 
 enum			e_x_events
 {
-	X_EVENT_KEY_PRESS = 2,
-	X_EVENT_KEY_RELEASE = 3,
-	X_EVENT_KEY_EXIT = 17
+	EVENT_KEY_PRESS = 2,
+	EVENT_KEY_RELEASE = 3,
+	EVENT_KEY_EXIT = 17
 };
 
 enum			e_x_masks
 {
-	X_KEY_PRESS_MASK = 1L << 0,
-	X_KEY_RELEASE_MASK = 1L << 1,
-	X_STRUCTURE_NOTIFY_MASK = 1L << 17,
+	M_KEY_PRESS = 1L << 0,
+	M_KEY_RELEASE = 1L << 1,
+	M_STRUCTURE_NOTIFY = 1L << 17,
 };
 
 enum			e_keys

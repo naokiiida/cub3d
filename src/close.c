@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:38:44 by niida             #+#    #+#             */
-/*   Updated: 2025/02/24 17:18:05 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 23:11:13 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -38,8 +38,6 @@ int	close_win(t_vars *vars)
 	vars->texture = NULL;
 	free(vars->buffer);
 	vars->buffer = NULL;
-	// free(vars);
-	// vars = NULL;
 	exit(0);
 }
 
@@ -65,8 +63,6 @@ int	close_win(t_vars *vars)
 	vars->texture = NULL;
 	free(vars->buffer);
 	vars->buffer = NULL;
-	free(vars);
-	vars = NULL;
 	mlx_loop_end(vars->mlx);
 	return (0);
 }

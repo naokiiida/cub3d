@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:40:44 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 20:51:32 by niida            ###   ########.fr       */
+/*   Updated: 2025/02/25 23:13:11 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ int	main(int argc, char *argv[])
 	if (init(&vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	// hookの設定　キー入力、キー解放、ウィンドウの閉じるボタン
-	mlx_hook(vars.win, X_EVENT_KEY_PRESS, X_KEY_PRESS_MASK, &key_press, &vars);
-	mlx_hook(vars.win, X_EVENT_KEY_RELEASE, X_KEY_RELEASE_MASK, &key_release, &vars);
-	mlx_hook(vars.win, X_EVENT_KEY_EXIT, X_STRUCTURE_NOTIFY_MASK, &close_win, &vars);
+	mlx_hook(vars.win, EVENT_KEY_PRESS, M_KEY_PRESS, &key_press, &vars);
+	mlx_hook(vars.win, EVENT_KEY_RELEASE, M_KEY_RELEASE, &key_release, &vars);
+	mlx_hook(vars.win, EVENT_KEY_EXIT, M_STRUCTURE_NOTIFY, &close_win, &vars);
 	// フレームごとに呼び出される関数
 	mlx_loop_hook(vars.mlx, &raycasting, &vars);
 	// // loopの開始update
