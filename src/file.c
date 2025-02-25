@@ -69,6 +69,7 @@ static int	fill_map(char *map_data, int **map, t_vars *vars)
 	while (++y < vars->map_size.y)
 	{
 		x = -1;
+		printf("fill_map:\n");
 		while (++x < vars->map_size.x && *map_data)
 		{
 			if (*map_data == '\n')
@@ -81,6 +82,7 @@ static int	fill_map(char *map_data, int **map, t_vars *vars)
 				map[y][x] = 2;
 			else
 				map[y][x] = 0;
+			printf("%c", map[y][x] + '0');
 			map_data++;
 		}
 	}
@@ -140,7 +142,7 @@ static int	process_map_cell(char c, t_vars *vars, int *curr_cols, t_player *play
 	}
 	else if (ft_strchr("NSWE", c))
 	{
-		if (set_player(player, vars->map_size.y, *curr_cols, c) == EXIT_FAILURE)
+		if (set_player(player, vars->map_size.y + 1, *curr_cols, c) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		(*curr_cols)++;
 	}
@@ -161,6 +163,13 @@ int	load_map(char *mapData, int **map, t_vars *vars)
 			return (EXIT_FAILURE);
 		mapData++;
 	}
+	if (curr_cols > 0)
+	{
+		vars->map_size.y++;
+		if (vars->map_size.x < curr_cols)
+			vars->map_size.x = curr_cols;
+	}
+
 	if (init_map(map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (fill_map(mapData, map, vars));
@@ -360,5 +369,6 @@ int	main(void)
 	printf("ceiling: 0x%06X floor: 0x%06X\n", vars.texture->ceiling_color,
 		vars.texture->floor_color);
 	printf("player pos: (%f,%f)\n", vars.player->pos.x, vars.player->pos.y);
+	printf("map size: (%d,%d)\n", vars.map_size.x, vars.map_size.y);
 	return (status);
 }
