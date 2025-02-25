@@ -80,7 +80,6 @@ int	floodfill(int **map, t_vars *vars)
 			{
 				if (flood_recursive(map, x, y, vars) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
-				break ;
 			}
 			x++;
 		}
@@ -88,18 +87,6 @@ int	floodfill(int **map, t_vars *vars)
 	}
 	printf("\n---------flooded result-----------\n");
 	print_map(map, vars->map_size);
-	y = 0;
-	while (y < vars->map_size.y)
-	{
-		x = 0;
-		while (x < vars->map_size.x)
-		{
-			if (map[y][x] == 2)
-				return (err("floodfill", "unvisited space found"));
-			x++;
-		}
-		y++;
-	}
 	return (EXIT_SUCCESS);
 }
 
