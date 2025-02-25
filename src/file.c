@@ -112,24 +112,26 @@ int	init_map(int ***map, int rows, int cols)
 	return (EXIT_SUCCESS);
 }
 
-int	set_player(t_player *player, int x, int y, char c)
+int	set_player(t_vars *vars, int x, int y, char c)
 {
-	if (!(player->pos.x == 0 && player->pos.y == 0)
-		&& !(player->dir.x == 0 && player->dir.y == 0))
+	t_player	*p;
+
+	p = vars->player;
+	if (!(p->pos.x == 0 && p->pos.y == 0) && !(p->dir.x == 0 && p->dir.y == 0))
 		return (err("load_map", "player already positioned"));
 	if (c == 'N')
-		player->dir = (t_vector2d){0, 1};
+		p->dir = (t_vector2d){0, 1};
 	else if (c == 'S')
-		player->dir = (t_vector2d){0, -1};
+		p->dir = (t_vector2d){0, -1};
 	else if (c == 'W')
-		player->dir = (t_vector2d){-1, 0};
+		p->dir = (t_vector2d){-1, 0};
 	else if (c == 'E')
-		player->dir = (t_vector2d){1, 0};
-	player->pos = (t_vector2d){x, y};
+		p->dir = (t_vector2d){1, 0};
+	p->pos = (t_vector2d){x, y};
 	return (EXIT_SUCCESS);
 }
 
-static int	process_cell(char c, t_vars *vars, int *curr_cols, t_player *player)
+static int	process_cell(char c, t_vars *vars, int *curr_cols)
 {
 	if (ft_strchr("01 ", c))
 		(*curr_cols)++;
@@ -142,7 +144,8 @@ static int	process_cell(char c, t_vars *vars, int *curr_cols, t_player *player)
 	}
 	else if (ft_strchr("NSWE", c))
 	{
-		if (set_player(player, vars->map_size.y + 1, *curr_cols, c) == EXIT_FAILURE)
+		if (set_player(vars, vars->map_size.y + 1, *curr_cols, c)
+			== EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		(*curr_cols)++;
 	}
@@ -153,13 +156,13 @@ static int	process_cell(char c, t_vars *vars, int *curr_cols, t_player *player)
 
 int	load_map(char *mapData, t_vars *vars)
 {
-	int		curr_cols;
+	int	curr_cols;
 
 	vars->map_size = (t_grid){0, 0};
 	curr_cols = 0;
 	while (*mapData)
 	{
-		if (process_cell(*mapData, vars, &curr_cols, vars->player) == EXIT_FAILURE)
+		if (process_cell(*mapData, vars, &curr_cols) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		mapData++;
 	}
