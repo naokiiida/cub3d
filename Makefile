@@ -1,5 +1,6 @@
 NAME := cub3D
 
+# CC := emcc
 CC := cc
 MKDIR := mkdir -p
 OS = $(shell uname)
@@ -31,14 +32,14 @@ LDFLAGS = -L$(MLX) -lmlx -L$(LIBFT) -lft -L$(GNL) -lgnl
 ifeq ($(OS), Linux)
 	MLX := minilibx-linux/
 	LDFLAGS += -lXext -lX11 -lm
-	CFLAGS += -D__Linux__
+	CFLAGS += -D__LINUX__
 endif
 ifeq ($(OS), Darwin)
 	# MLX := minilibx_mms_20200219/
 	# MLXNAME := libmlx.dylib
 	MLX := minilibx_opengl_20191021/
 	LDFLAGS += -framework OpenGL -framework AppKit
-	CFLAGS += -D__Apple__
+	CFLAGS += -D__APPLE__
 endif
 
 ifdef WITH_LEAKS
@@ -87,10 +88,12 @@ libft:
 clean:
 	@make $@ -C $(MLX)
 	@make $@ -C $(GNL)
+	@make $@ -C $(LIBFT)
 	rm -rf $(ODIR)
 
 fclean: clean
 	@make $@ -C $(GNL)
+	@make $@ -C $(LIBFT)
 	rm -f $(NAME)
 	rm -rf $(NAME).dSYM
 
@@ -101,12 +104,12 @@ pip: requirements.txt
 	python3 -m pip list --outdated
 	python3 -m pip install -U -r requirements.txt
 
-norm: $(SRCS)
-	norminette $(SRCS)
+norm:
+	norminette $(SDIR) $(IDIR)
 	nm -u $(NAME) | grep -v -E "_(open|close|read|write|printf|malloc|free|perror|strerror|exit|gettimeofday|sin|cos|tan|asin|acos|atan|atan2|sqrt|pow|ceil|floor|round|trunc|fabs|abs|mlx_init|mlx_new_window|mlx_new_image|mlx_put_image_to_window|mlx_loop|mlx_get_data_addr|mlx_destroy_image|mlx_destroy_window|mlx_hook|mlx_loop_hook|mlx_string_put|mlx_get_color_value|mlx_clear_window|mlx_pixel_put|mlx_key_hook|mlx_mouse_hook)@@"
 
 fmt: $(SRCS)
-	c_formatter_42 $(SRCS)*.c $(IDIR)*.h
+	c_formatter_42 $(SDIR)*.c $(IDIR)*.h
 
 deps:
 	nm -u $(NAME)
@@ -118,7 +121,7 @@ san: fclean
 	@make all WITH_ASAN=1 WITH_NDEF=1
 
 # DO NOT RUN WITH_ASAN=1 WITH_NDEF=1, as it will conflict
-drun:
+drun: $(NAME)
 	MallocGuardEdges=1 MallocCheckHeapStart=1 ./$(NAME)
 v: all
 	valgrind --leak-check=full --trace-children=yes ./$(NAME)
