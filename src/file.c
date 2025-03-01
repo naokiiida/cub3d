@@ -33,6 +33,15 @@ static void	print_map(int **map, t_grid map_size);
 // 	perror(msg);
 // 	return (EXIT_FAILURE);
 // }
+int	ft_strcmp(const char *str1, const char *str2)
+{
+	int	i;
+
+	i = 0;
+	while (str1[i] && str2[i] && str1[i] == str2[i])
+		i++;
+	return (str1[i] - str2[i]);
+}
 
 static int	flood_recursive(int **map, int x, int y, t_vars *vars)
 {
@@ -265,7 +274,7 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 	status = 0;
 	while (keys[++i] && status == 0)
 	{
-		if (strcmp(kv[0], keys[i]) == 0)
+		if (ft_strcmp(kv[0], keys[i]) == 0)
 		{
 			if (i < 4 && !path[i])
 				path[i] = ft_strdup(kv[1]);
@@ -339,7 +348,7 @@ int	read_elements(int fd, t_vars *vars)
 			close(fd);
 			return (err("read_elements", "Failed to read line"));
 		}
-		if (strcmp(line, "\n") == 0)
+		if (ft_strcmp(line, "\n") == 0)
 			continue ;
 		remove_newline(line);
 		if (check_elements(line, vars->texture, vars->path) == EXIT_FAILURE)
@@ -371,7 +380,7 @@ int	skip_blank_lines(int fd)
 			close(fd);
 			return (err("skip_blank_lines", "Where's the map?"));
 		}
-		if (strcmp(line, "\n") == 0)
+		if (ft_strcmp(line, "\n") == 0)
 			continue ;
 		blank = 0;
 	}
@@ -390,7 +399,7 @@ char	*read_map_data(int fd)
 		printf("%s", line);
 		if (line == NULL)
 			break ;
-		if (strcmp(line, "\n") == 0)
+		if (ft_strcmp(line, "\n") == 0)
 		{
 			close(fd);
 			err("read_map_data", "map is split");
