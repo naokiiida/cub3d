@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 17:28:53 by sasano            #+#    #+#             */
-/*   Updated: 2023/10/26 21:21:12 by sasano           ###   ########.fr       */
+/*   Updated: 2025/03/01 22:08:31 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	**str_split(char **dest, char const *s, char c, int len)
 	i = -1;
 	while (++i < len)
 	{
-		while (*s == c || *s == 0)
+		while (*s == c && *s != '\0')
 			s++;
 		strlen = countsetlen(s, c);
 		dest[i] = (char *)malloc(sizeof(char) * (strlen + 1));
@@ -60,7 +60,7 @@ static char	**str_split(char **dest, char const *s, char c, int len)
 			return (0);
 		}
 		j = 0;
-		while (*s != 0 && *s != c)
+		while (*s != '\0' && *s != c)
 			dest[i][j++] = *s++;
 		dest[i][j] = 0;
 	}
