@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:40:44 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 23:13:11 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/02 03:57:17 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ int	main(int argc, char *argv[])
 {
 	t_vars	vars;
 
-	(void)argv;
 	if (argc != 2)
 	{
 		printf("usage: cub3D <single.cub>\n");
 		return (0);
 	}
-
 	if (get_input(argv[1], &vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	// ゲームの初期化

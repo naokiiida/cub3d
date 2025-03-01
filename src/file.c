@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/02/26 00:18:34 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/02 03:51:49 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
@@ -123,10 +123,12 @@ static int	floodfill(int **map, t_vars *vars)
 		}
 		y++;
 	}
-	printf("\n---------flooded result-----------\n");
-	print_map(map, vars->map_size);
 	return (EXIT_SUCCESS);
 }
+	// printf("\n---------flooded result-----------\n");
+	// print_map(map, vars->map_size);
+	// printf("\nMap size: (%d,%d) Current x: %d, y: %d\n",
+	// 	vars->map_size.x, vars->map_size.y, x, y);
 
 static int	fill_map(char *map_data, int **map, t_vars *vars)
 {
@@ -183,30 +185,24 @@ static int	init_map(int ***map, int rows, int cols)
 static int	set_player(t_vars *vars, int x, int y, char c)
 {
 	t_player	*p;
+	t_vector2d	dirs[4];
+	t_vector2d	planes[4];
+	int			idx;
 
 	p = vars->player;
 	if (!(p->pos.x == 0 && p->pos.y == 0) && !(p->dir.x == 0 && p->dir.y == 0))
 		return (err("load_map", "player already positioned"));
-	if (c == 'N')
-	{
-		p->dir = (t_vector2d){0, -1};
-		p->plane = (t_vector2d){0.66, 0};
-	}
-	else if (c == 'S')
-	{
-		p->dir = (t_vector2d){0, 1};
-		p->plane = (t_vector2d){-0.66, 0};
-	}
-	else if (c == 'W')
-	{
-		p->dir = (t_vector2d){-1, 0};
-		p->plane = (t_vector2d){0, -0.66};
-	}
-	else if (c == 'E')
-	{
-		p->dir = (t_vector2d){1, 0};
-		p->plane = (t_vector2d){0, 0.66};
-	}
+	dirs[0] = (t_vector2d){0, -1};
+	dirs[1] = (t_vector2d){0, 1};
+	dirs[2] = (t_vector2d){-1, 0};
+	dirs[3] = (t_vector2d){1, 0};
+	planes[0] = (t_vector2d){0.66, 0};
+	planes[1] = (t_vector2d){-0.66, 0};
+	planes[2] = (t_vector2d){0, -0.66};
+	planes[3] = (t_vector2d){0, 0.66};
+	idx = ft_strchr("NSWE", c) - "NSWE";
+	p->dir = dirs[idx];
+	p->plane = planes[idx];
 	p->pos = (t_vector2d){x, y};
 	p->move_speed = 0.05;
 	p->rot_speed = 0.05;
@@ -215,6 +211,7 @@ static int	set_player(t_vars *vars, int x, int y, char c)
 
 static int	process_cell(char c, t_vars *vars, int *curr_cols)
 {
+	printf("%c", c);
 	if (ft_strchr("01 ", c))
 		(*curr_cols)++;
 	else if (c == '\n')
@@ -241,6 +238,7 @@ static int	load_map(char *map_data, t_vars *vars)
 
 	vars->map_size = (t_grid){0, 0};
 	curr_cols = 0;
+	printf("\nloading...\n");
 	while (*map_data)
 	{
 		if (process_cell(*map_data, vars, &curr_cols) == EXIT_FAILURE)
@@ -322,45 +320,68 @@ static int	parse_rgb(int *color, char *input)
 	return (EXIT_SUCCESS);
 }
 
+static int	handle_texture_path(char **kv, char **path_ptr)
+{
+	if (count_strings(kv) != 2)
+		return (err("check_elements", "More than one key pair"));
+	if (validate_file(kv[1], ".xpm") == EXIT_FAILURE)
+		return (err("check_elements", "No .xpm extension found"));
+	*path_ptr = ft_strdup(kv[1]);
+	return (EXIT_SUCCESS);
+}
+
+static void	free_string_array(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+}
+
+static int	process_texture_path(char **kv, char *path[4], int i)
+{
+	if (!path[i])
+		return (handle_texture_path(kv, path, i));
+	return (err("check_elements", "Already defined"));
+}
+
+static int	process_key(int i, t_texture *tex, char *line)
+{
+	if (i == 4 && !tex->floor_color)
+		return (parse_rgb(&tex->floor_color, &line[2]));
+	else if (i == 5 && !tex->ceiling_color)
+		return (parse_rgb(&tex->ceiling_color, &line[2]));
+	else
+		return (err("check_elements", "Already defined"));
+}
+
 static int	check_elements(char *line, t_texture *tex, char *path[4])
 {
-	char		**kv;
 	static char	*keys[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
+	char		**kv;
 	int			i;
 	int			status;
-	_Bool		match;
 
 	kv = ft_split(line, ' ');
+	if (!kv)
+		return (err("check_elements", "Failed to split line"));
+	status = EXIT_FAILURE;
 	i = -1;
-	status = 0;
-	match = false;
-	while (keys[++i] && status == 0)
+	while (keys[++i] && status != EXIT_SUCCESS)
 	{
 		if (ft_strcmp(kv[0], keys[i]) == 0)
 		{
-			match = true;
 			if (i < 4 && !path[i])
-			{
-				if (count_strings(kv) != 2)
-					return (err("check_elements",
-							"More than one space separated pair"));
-				if (validate_file(kv[1], ".xpm") == EXIT_FAILURE)
-					return (err("check_elements", "No .xpm extension found"));
-				path[i] = ft_strdup(kv[1]);
-			}
-			else if (i == 4 && !tex->floor_color)
-				status = parse_rgb(&tex->floor_color, &line[2]);
-			else if (i == 5 && !tex->ceiling_color)
-				status = parse_rgb(&tex->ceiling_color, &line[2]);
+				status = handle_texture_path(kv, &path[i]);
 			else
-				return (err("check_elements", "Already defined"));
+				status = process_key(i, tex, line);
 		}
 	}
-	if (match == false)
-		return (err("check_elements", "No valid Key found"));
-	i = 0;
-	while (kv[i])
-		free(kv[i++]);
+	if (status == EXIT_FAILURE)
+		status = err("check_elements", "No valid Key found");
+	free_string_array(kv);
 	return (status);
 }
 
@@ -383,33 +404,37 @@ static void	print_map(int **map, t_grid map_size)
 	}
 }
 
+static _Bool	is_all_elements_loaded(t_vars *vars)
+{
+	return (vars->texture->ceiling_color && vars->texture->floor_color
+		&& vars->path[0] && vars->path[1] && vars->path[2] && vars->path[3]);
+}
+
 int	read_elements(int fd, t_vars *vars)
 {
 	char	*line;
-	_Bool	done;
+	int		status;
 
-	done = false;
-	while (!done)
+	while (!is_all_elements_loaded(vars))
 	{
 		line = get_next_line(fd);
-		ft_putstr_fd(line, 1);
 		if (line == NULL)
 		{
 			close(fd);
 			return (err("read_elements", "Failed to read line"));
 		}
-		if (ft_strcmp(line, "\n") == 0)
-			continue ;
-		remove_trailing(line, '\n');
-		if (check_elements(line, vars->texture, vars->path) == EXIT_FAILURE)
+		if (ft_strcmp(line, "\n") != 0)
 		{
-			free(line);
-			close(fd);
-			return (EXIT_FAILURE);
+			remove_trailing(line, '\n');
+			status = check_elements(line, vars->texture, vars->path);
+			if (status == EXIT_FAILURE)
+			{
+				free(line);
+				close(fd);
+				return (EXIT_FAILURE);
+			}
 		}
 		free(line);
-		done = vars->texture->ceiling_color && vars->texture->floor_color
-			&& vars->path[0] && vars->path[1] && vars->path[2] && vars->path[3];
 	}
 	return (EXIT_SUCCESS);
 }
@@ -445,11 +470,9 @@ int	read_map_data(int fd, char **map_data)
 	char	*line;
 	char	*temp;
 
-	printf("%s", *map_data);
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("%s", line);
 		if (ft_strcmp(line, "\n") == 0)
 		{
 			free(line);
@@ -466,7 +489,38 @@ int	read_map_data(int fd, char **map_data)
 		free(line);
 		line = get_next_line(fd);
 	}
-	// printf("\n\n%s\n\n", *map_data);
+	return (EXIT_SUCCESS);
+}
+
+static int	initialize_vars(t_vars *vars)
+{
+	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
+	vars->player = (t_player *)calloc(1, sizeof(t_player));
+	if (!vars->texture || !vars->player)
+		return (err("get_input", "Memory allocation failed"));
+	return (EXIT_SUCCESS);
+}
+
+static int	process_map_data(int fd, char **map_data)
+{
+	if (skip_blank_lines(fd, map_data) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (read_map_data(fd, map_data) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+static int	setup_map(char *map_data, t_vars *vars)
+{
+	if (load_map(map_data, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (init_map(&vars->map, vars->map_size.y, vars->map_size.x)
+		== EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (fill_map(map_data, vars->map, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (floodfill(vars->map, vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -474,11 +528,11 @@ int	get_input(char *file, t_vars *vars)
 {
 	int		fd;
 	char	*map_data;
+	int		status;
 
-	fd = -1;
 	map_data = NULL;
-	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
-	vars->player = (t_player *)calloc(1, sizeof(t_player));
+	if (initialize_vars(vars) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	if (validate_file(file, ".cub") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	fd = open(file, O_RDONLY);
@@ -486,24 +540,15 @@ int	get_input(char *file, t_vars *vars)
 		return (err("get_input", strerror(errno)));
 	if (read_elements(fd, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (skip_blank_lines(fd, &map_data) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (read_map_data(fd, &map_data) == EXIT_FAILURE)
+	if (process_map_data(fd, &map_data) == EXIT_FAILURE)
 	{
 		free(map_data);
 		return (EXIT_FAILURE);
 	}
 	close(fd);
-	if (load_map(map_data, vars) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (init_map(&vars->map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (fill_map(map_data, vars->map, vars) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+	status = setup_map(map_data, vars);
 	free(map_data);
-	if (floodfill(vars->map, vars) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	return (status);
 }
 
 // int	main(int argc, char **argv)
