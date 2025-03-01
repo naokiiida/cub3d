@@ -33,6 +33,34 @@ static void	print_map(int **map, t_grid map_size);
 // 	perror(msg);
 // 	return (EXIT_FAILURE);
 // }
+int	ft_atoi_mod(const char *str)
+{
+	long	result;
+	long	sign;
+	int		digits;
+
+	result = 0;
+	sign = 1;
+	digits = 0;
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	if (*str == '-' || *str == '+')
+		sign = 44 - *str++;
+	while (*str >= '0' && *str <= '9' && digits++ < 19)
+	{
+		result = result * 10 + (*str++ - '0');
+		if ((result > LONG_MAX / 10 || (result == LONG_MAX / 10 && *str > '7'))
+			&& sign == 1)
+			errno = ERANGE;
+		if ((result > LONG_MAX / 10 || (result == LONG_MAX / 10 && *str > '8'))
+			&& sign == -1)
+			errno = ERANGE;
+	}
+	if (*str && (!(*str >= '0' && *str <= '9')))
+		errno = EINVAL;
+	return ((int)(sign * result));
+}
+
 int	ft_strcmp(const char *str1, const char *str2)
 {
 	int	i;
@@ -260,8 +288,9 @@ static int	parse_rgb(int *color, char *input)
 	i = 0;
 	while (rgb[i])
 	{
-		num = ft_atoi(rgb[i]);
-		if (num < 0 || num > 255)
+		errno = 0;
+		num = ft_atoi_mod(rgb[i]);
+		if (num < 0 || num > 255 || errno)
 			return (err("parse_rgb", "RGB values must be between 0-255"));
 		*color = (*color << 8) | num;
 		i++;
