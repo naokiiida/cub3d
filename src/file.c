@@ -77,7 +77,6 @@ static int	flood_recursive(int **map, int x, int y, t_vars *vars)
 		|| map[y][x] == 1 || map[y][x] == VISITED)
 		return (EXIT_SUCCESS);
 	if (map[y][x] == 0)
-		return (err("flood_recursive", "hole in the wall"));
 		return (err("flood_recursive", "misplaced player or floor"));
 	map[y][x] = VISITED;
 	if (flood_recursive(map, x + 1, y, vars) == EXIT_FAILURE)
@@ -387,13 +386,13 @@ static void	print_map(int **map, t_grid map_size)
 int	read_elements(int fd, t_vars *vars)
 {
 	char	*line;
-	_Bool	all_elements;
+	_Bool	done;
 
-	all_elements = 0;
-	while (!all_elements)
+	done = false;
+	while (!done)
 	{
 		line = get_next_line(fd);
-		printf("%s", line);
+		ft_putstr_fd(line, 1);
 		if (line == NULL)
 		{
 			close(fd);
@@ -409,9 +408,8 @@ int	read_elements(int fd, t_vars *vars)
 			return (EXIT_FAILURE);
 		}
 		free(line);
-		all_elements = vars->texture->ceiling_color
-			&& vars->texture->floor_color && vars->path[0] && vars->path[1]
-			&& vars->path[2] && vars->path[3];
+		done = vars->texture->ceiling_color && vars->texture->floor_color
+			&& vars->path[0] && vars->path[1] && vars->path[2] && vars->path[3];
 	}
 	return (EXIT_SUCCESS);
 }
