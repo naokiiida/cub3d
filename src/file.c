@@ -117,6 +117,9 @@ static int	floodfill(int **map, t_vars *vars)
 				if (flood_recursive(map, x, y, vars) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
 			}
+			if (map[y][x] == 0 && (x == 0 || y == 0
+				|| x == vars->map_size.x - 1 || y == vars->map_size.y - 1))
+				return (err("floodfill", "misplaced player or floor"));
 			x++;
 		}
 		y++;
