@@ -278,16 +278,19 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 	static char	*keys[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
 	int			i;
 	int			status;
+	_Bool		match;
 
 	kv = ft_split(line, ' ');
 	if (count_strings(kv) != 2)
 		return (err("check_elements", "Invalid element format"));
 	i = -1;
 	status = 0;
+	match = false;
 	while (keys[++i] && status == 0)
 	{
 		if (ft_strcmp(kv[0], keys[i]) == 0)
 		{
+			match = true;
 			if (i < 4 && !path[i])
 			{
 				if (validate_file(kv[1], ".xpm") == EXIT_FAILURE)
@@ -302,6 +305,8 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 				return (err("check_elements", "Already defined"));
 		}
 	}
+	if (match == false)
+		return (err("check_elements", "No valid Key found"));
 	i = 0;
 	while (kv[i])
 		free(kv[i++]);
