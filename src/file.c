@@ -247,6 +247,8 @@ static int	load_map(char *map_data, t_vars *vars)
 		mapData++;
 		map_data++;
 	}
+	if (vars->player->move_speed == 0 || vars->player->rot_speed == 0)
+		return (err("load_map", "player not set"));
 	if (curr_cols > 0)
 	{
 		vars->map_size.y++;
