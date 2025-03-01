@@ -414,7 +414,7 @@ int	read_elements(int fd, t_vars *vars)
 	return (EXIT_SUCCESS);
 }
 
-int	skip_blank_lines(int fd)
+int	skip_blank_lines(int fd, char **map_data)
 {
 	char	*line;
 	_Bool	blank;
@@ -423,40 +423,51 @@ int	skip_blank_lines(int fd)
 	while (blank)
 	{
 		line = get_next_line(fd);
-		printf("%s", line);
 		if (line == NULL)
 		{
 			close(fd);
 			return (err("skip_blank_lines", "Where's the map?"));
 		}
 		if (ft_strcmp(line, "\n") == 0)
+		{
+			free(line);
 			continue ;
+		}
 		blank = 0;
+		*map_data = ft_strdup(line);
+		free(line);
 	}
 	return (EXIT_SUCCESS);
 }
 
-char	*read_map_data(int fd)
+int	read_map_data(int fd, char **map_data)
 {
 	char	*line;
-	char	*map_data;
+	char	*temp;
 
-	map_data = NULL;
-	while (1)
+	printf("%s", *map_data);
+	line = get_next_line(fd);
+	while (line)
 	{
-		line = get_next_line(fd);
 		printf("%s", line);
-		if (line == NULL)
-			break ;
 		if (ft_strcmp(line, "\n") == 0)
 		{
-			close(fd);
-			err("read_map_data", "map is split");
-			return (NULL);
+			free(line);
+			return (err("read_map_data", "map is split"));
 		}
-		map_data = ft_strjoin(map_data, line);
+		temp = *map_data;
+		*map_data = ft_strjoin(*map_data, line);
+		if (*map_data == NULL)
+		{
+			free(line);
+			return (err("read_map_data", "ft_strjoin failed"));
+		}
+		free(temp);
+		free(line);
+		line = get_next_line(fd);
 	}
-	return (map_data);
+	// printf("\n\n%s\n\n", *map_data);
+	return (EXIT_SUCCESS);
 }
 
 int	get_input(char *file, t_vars *vars)
@@ -465,6 +476,7 @@ int	get_input(char *file, t_vars *vars)
 	char	*map_data;
 
 	fd = -1;
+	map_data = NULL;
 	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
 	vars->player = (t_player *)calloc(1, sizeof(t_player));
 	if (validate_file(file, ".cub") == EXIT_FAILURE)
@@ -474,12 +486,14 @@ int	get_input(char *file, t_vars *vars)
 		return (err("get_input", strerror(errno)));
 	if (read_elements(fd, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (skip_blank_lines(fd) == EXIT_FAILURE)
+	if (skip_blank_lines(fd, &map_data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	map_data = read_map_data(fd);
+	if (read_map_data(fd, &map_data) == EXIT_FAILURE)
+	{
+		free(map_data);
+		return (EXIT_FAILURE);
+	}
 	close(fd);
-	if (!map_data)
-		return (EXIT_FAILURE);
 	if (load_map(map_data, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (init_map(&vars->map, vars->map_size.y, vars->map_size.x) == EXIT_FAILURE)
