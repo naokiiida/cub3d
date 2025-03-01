@@ -278,6 +278,20 @@ static int	validate_file(char *file, const char *expect_ext)
 	return (EXIT_SUCCESS);
 }
 
+static void	remove_trailing(char *line, char delim)
+{
+	int	i;
+
+	if (!line)
+		return ;
+	i = 0;
+	while (line[i])
+		i++;
+	while (i > 0 && line[i - 1] == delim)
+		i--;
+	line[i] = '\0';
+}
+
 static int	parse_rgb(int *color, char *input)
 {
 	char	**rgb;
@@ -287,6 +301,9 @@ static int	parse_rgb(int *color, char *input)
 	rgb = ft_split(input, ',');
 	if (count_strings(rgb) != 3)
 		return (err("parse_rgb", "Invalid RGB format"));
+	i = -1;
+	while (rgb[++i])
+		remove_trailing(rgb[i], ' ');
 	i = 0;
 	while (rgb[i])
 	{
@@ -312,8 +329,6 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 	_Bool		match;
 
 	kv = ft_split(line, ' ');
-	if (count_strings(kv) != 2)
-		return (err("check_elements", "Invalid element format"));
 	i = -1;
 	status = 0;
 	match = false;
@@ -324,14 +339,17 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 			match = true;
 			if (i < 4 && !path[i])
 			{
+				if (count_strings(kv) != 2)
+					return (err("check_elements",
+							"More than one space separated pair"));
 				if (validate_file(kv[1], ".xpm") == EXIT_FAILURE)
 					return (err("check_elements", "No .xpm extension found"));
 				path[i] = ft_strdup(kv[1]);
 			}
 			else if (i == 4 && !tex->floor_color)
-				status = parse_rgb(&tex->floor_color, kv[1]);
+				status = parse_rgb(&tex->floor_color, &line[2]);
 			else if (i == 5 && !tex->ceiling_color)
-				status = parse_rgb(&tex->ceiling_color, kv[1]);
+				status = parse_rgb(&tex->ceiling_color, &line[2]);
 			else
 				return (err("check_elements", "Already defined"));
 		}
@@ -342,16 +360,6 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 	while (kv[i])
 		free(kv[i++]);
 	return (status);
-}
-
-static void	remove_newline(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-		i++;
-	line[--i] = '\0';
 }
 
 static void	print_map(int **map, t_grid map_size)
@@ -390,7 +398,7 @@ int	read_elements(int fd, t_vars *vars)
 		}
 		if (ft_strcmp(line, "\n") == 0)
 			continue ;
-		remove_newline(line);
+		remove_trailing(line, '\n');
 		if (check_elements(line, vars->texture, vars->path) == EXIT_FAILURE)
 		{
 			free(line);
