@@ -233,17 +233,19 @@ static int	process_cell(char c, t_vars *vars, int *curr_cols)
 	return (EXIT_SUCCESS);
 }
 
-static int	load_map(char *mapData, t_vars *vars)
+static int	load_map(char *map_data, t_vars *vars)
 {
 	int	curr_cols;
 
 	vars->map_size = (t_grid){0, 0};
 	curr_cols = 0;
 	while (*mapData)
+	while (*map_data)
 	{
-		if (process_cell(*mapData, vars, &curr_cols) == EXIT_FAILURE)
+		if (process_cell(*map_data, vars, &curr_cols) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		mapData++;
+		map_data++;
 	}
 	if (curr_cols > 0)
 	{
