@@ -78,6 +78,7 @@ static int	flood_recursive(int **map, int x, int y, t_vars *vars)
 		return (EXIT_SUCCESS);
 	if (map[y][x] == 0)
 		return (err("flood_recursive", "hole in the wall"));
+		return (err("flood_recursive", "misplaced player or floor"));
 	map[y][x] = VISITED;
 	if (flood_recursive(map, x + 1, y, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
@@ -223,8 +224,7 @@ static int	process_cell(char c, t_vars *vars, int *curr_cols)
 	}
 	else if (ft_strchr("NSWE", c))
 	{
-		if (set_player(vars, vars->map_size.y + 1, *curr_cols, c)
-			== EXIT_FAILURE)
+		if (set_player(vars, vars->map_size.y, *curr_cols, c) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		(*curr_cols)++;
 	}
