@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/03/02 03:51:49 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/02 04:01:52 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
@@ -23,7 +23,7 @@
 //{
 //	system("leaks -q a.out");
 //}
-static void	print_map(int **map, t_grid map_size);
+// static void	print_map(int **map, t_grid map_size);
 
 // static int	err(char *function_name, const char *msg)
 // {
@@ -340,13 +340,6 @@ static void	free_string_array(char **arr)
 	free(arr);
 }
 
-static int	process_texture_path(char **kv, char *path[4], int i)
-{
-	if (!path[i])
-		return (handle_texture_path(kv, path, i));
-	return (err("check_elements", "Already defined"));
-}
-
 static int	process_key(int i, t_texture *tex, char *line)
 {
 	if (i == 4 && !tex->floor_color)
@@ -385,24 +378,24 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 	return (status);
 }
 
-static void	print_map(int **map, t_grid map_size)
-{
-	int	i;
-	int	j;
+// static void	print_map(int **map, t_grid map_size)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (i < map_size.y)
-	{
-		j = 0;
-		while (j < map_size.x)
-		{
-			printf("%d", map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < map_size.y)
+// 	{
+// 		j = 0;
+// 		while (j < map_size.x)
+// 		{
+// 			printf("%d", map[i][j]);
+// 			j++;
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+// }
 
 static _Bool	is_all_elements_loaded(t_vars *vars)
 {
