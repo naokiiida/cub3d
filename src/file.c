@@ -239,12 +239,10 @@ static int	load_map(char *map_data, t_vars *vars)
 
 	vars->map_size = (t_grid){0, 0};
 	curr_cols = 0;
-	while (*mapData)
 	while (*map_data)
 	{
 		if (process_cell(*map_data, vars, &curr_cols) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		mapData++;
 		map_data++;
 	}
 	if (vars->player->move_speed == 0 || vars->player->rot_speed == 0)
