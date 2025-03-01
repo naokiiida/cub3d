@@ -236,6 +236,18 @@ static int	count_strings(char **arr)
 	return (count);
 }
 
+static int	validate_file(char *file, const char *expect_ext)
+{
+	char	*ext;
+
+	ext = ft_strrchr(file, '.');
+	if (ext == NULL)
+		return (err("validate_file", "No file extension"));
+	if (ft_strcmp(ext, expect_ext) != 0)
+		return (err("validate_file", "Invalid file extension"));
+	return (EXIT_SUCCESS);
+}
+
 static int	parse_rgb(int *color, char *input)
 {
 	char	**rgb;
@@ -277,7 +289,11 @@ static int	check_elements(char *line, t_texture *tex, char *path[4])
 		if (ft_strcmp(kv[0], keys[i]) == 0)
 		{
 			if (i < 4 && !path[i])
+			{
+				if (validate_file(kv[1], ".xpm") == EXIT_FAILURE)
+					return (err("check_elements", "No .xpm extension found"));
 				path[i] = ft_strdup(kv[1]);
+			}
 			else if (i == 4 && !tex->floor_color)
 				status = parse_rgb(&tex->floor_color, kv[1]);
 			else if (i == 5 && !tex->ceiling_color)
@@ -300,18 +316,6 @@ static void	remove_newline(char *line)
 	while (line[i])
 		i++;
 	line[--i] = '\0';
-}
-
-static int	validate_file(char *file)
-{
-	char	*ext;
-
-	ext = ft_strrchr(file, '.');
-	if (ext == NULL)
-		return (err("validate_file", "No file extension"));
-	if (strcmp(ext, ".cub") != 0)
-		return (err("validate_file", "Invalid file extension"));
-	return (EXIT_SUCCESS);
 }
 
 static void	print_map(int **map, t_grid map_size)
@@ -418,7 +422,7 @@ int	get_input(char *file, t_vars *vars)
 	fd = -1;
 	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
 	vars->player = (t_player *)calloc(1, sizeof(t_player));
-	if (validate_file(file) == EXIT_FAILURE)
+	if (validate_file(file, ".cub") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
