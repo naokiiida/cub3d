@@ -94,11 +94,18 @@ int	free_n_err(char *function_name, const char *msg, char **rgb)
 
 void	free_vars(t_vars *vars)
 {
+	int	i;
+
 	free(vars->path[0]);
 	free(vars->path[1]);
 	free(vars->path[2]);
 	free(vars->path[3]);
 	free(vars->player);
 	free(vars->texture);
+	i = 0;
+	while (vars->map && i < vars->map_size.y)
+	{
+		free(vars->map[++i]);
+	}
 	free(vars->map);
 }
