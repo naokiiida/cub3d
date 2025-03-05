@@ -28,8 +28,10 @@ int	err(char *function_name, const char *msg)
 int	close_win(t_vars *vars)
 {
 	write(1, "closing...\n", 11);
-	mlx_destroy_image(vars->mlx, vars->buffer->img);
-	mlx_destroy_window(vars->mlx, vars->win);
+	if (vars->mlx && vars->buffer && vars->buffer->img)
+		mlx_destroy_image(vars->mlx, vars->buffer->img);
+	if (vars->mlx && vars->win)
+		mlx_destroy_window(vars->mlx, vars->win);
 	free(vars->mlx);
 	vars->mlx = NULL;
 	free(vars->map);
@@ -48,16 +50,25 @@ int	close_win(t_vars *vars)
 int	close_display(t_vars *vars)
 {
 	(void)vars;
-	write(1, "closing...\n", 11);
 	return (0);
 }
 #elif __LINUX__
 
 int	close_win(t_vars *vars)
 {
-	mlx_destroy_image(vars->mlx, vars->buffer->img);
-	mlx_destroy_window(vars->mlx, vars->win);
+	write(1, "closing...\n", 11);
 	mlx_loop_end(vars->mlx);
+	return (0);
+}
+
+int	close_display(t_vars *vars)
+{
+	if (vars->mlx && vars->buffer && vars->buffer->img)
+		mlx_destroy_image(vars->mlx, vars->buffer->img);
+	if (vars->mlx && vars->win)
+		mlx_destroy_window(vars->mlx, vars->win);
+	if (vars->mlx)
+		mlx_destroy_display(vars->mlx);
 	free(vars->mlx);
 	vars->mlx = NULL;
 	free(vars->map);
@@ -70,44 +81,8 @@ int	close_win(t_vars *vars)
 	vars->texture = NULL;
 	free(vars->buffer);
 	vars->buffer = NULL;
-	return (0);
-}
-
-int	close_display(t_vars *vars)
-{
-	write(1, "closing...\n", 11);
-	mlx_destroy_display(vars->mlx);
 	free(vars);
 	vars = NULL;
 	return (0);
 }
 #endif
-
-int	free_n_err(char *function_name, const char *msg, char **rgb)
-{
-	int	i;
-
-	i = 0;
-	while (rgb[i])
-		free(rgb[i++]);
-	free(rgb);
-	return (err(function_name, msg));
-}
-
-void	free_vars(t_vars *vars)
-{
-	// int	i;
-
-	free(vars->path[0]);
-	free(vars->path[1]);
-	free(vars->path[2]);
-	free(vars->path[3]);
-	free(vars->player);
-	free(vars->texture);
-	// i = 0;
-	// while (vars->map && i < vars->map_size.y)
-	// {
-	// 	free(vars->map[++i]);
-	// }
-	free(vars->map);
-}

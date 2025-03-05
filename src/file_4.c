@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:57:15 by niida             #+#    #+#             */
-/*   Updated: 2025/03/05 15:58:26 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/05 21:06:55 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -129,7 +129,7 @@ static int	init_map(int ***map, int rows, int cols)
 
 int	setup_map(char *map_data, t_vars *vars)
 {
-	int i;
+	int	i;
 
 	if (load_map(map_data, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
