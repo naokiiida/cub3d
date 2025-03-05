@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:38:44 by niida             #+#    #+#             */
-/*   Updated: 2025/03/06 00:52:24 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 01:12:52 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -31,16 +31,18 @@ int	close_win(t_vars *vars)
 
 	i = -1;
 	free_vars(vars);
+	free(vars->ray);
+	free_map(vars);
+	if (!vars->mlx)
+		exit(0);
 	while (++i < 4)
 		if (vars->tile[i].img)
 			mlx_destroy_image(vars->mlx, vars->tile[i].img);
 	if (vars->mlx && vars->buffer && vars->buffer->img)
 		mlx_destroy_image(vars->mlx, vars->buffer->img);
+	free(vars->buffer);
 	if (vars->mlx && vars->win)
 		mlx_destroy_window(vars->mlx, vars->win);
-	free(vars->ray);
-	free(vars->buffer);
-	free_map(vars);
 	if (vars->mlx)
 		free(vars->mlx);
 	exit(0);
@@ -54,16 +56,18 @@ int	close_win(t_vars *vars)
 
 	i = -1;
 	free_vars(vars);
+	free(vars->ray);
+	free_map(vars);
+	if (!vars->mlx)
+		exit(0);
 	while (++i < 4)
 		if (vars->tile[i].img)
 			mlx_destroy_image(vars->mlx, vars->tile[i].img);
 	if (vars->mlx && vars->buffer && vars->buffer->img)
 		mlx_destroy_image(vars->mlx, vars->buffer->img);
+	free(vars->buffer);
 	if (vars->mlx && vars->win)
 		mlx_destroy_window(vars->mlx, vars->win);
-	free(vars->ray);
-	free(vars->buffer);
-	free_map(vars);
 	if (vars->mlx)
 		mlx_destroy_display(vars->mlx);
 	if (vars->mlx)
