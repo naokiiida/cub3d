@@ -48,14 +48,13 @@ int	key_press(int key, t_vars *vars)
 		key_rotate(vars->player, -1);
 	if (key == KEY_RIGHT)
 		key_rotate(vars->player, 1);
-	if (key == KEY_ESC)
-		close_win(vars);
 	printf("pos: %lf,%lf\tdir: %lf,%lf\tplane: %lf,%lf\n",
 		vars->player->pos.x, vars->player->pos.y,
 		vars->player->dir.x, vars->player->dir.y,
 		vars->player->plane.x, vars->player->plane.y);
-	mlx_clear_window(vars->mlx, vars->win);
 	raycasting(vars);
+	if (key == KEY_ESC)
+		close_win(vars);
 	return (0);
 }
 

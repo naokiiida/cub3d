@@ -27,12 +27,18 @@ int	err(char *function_name, const char *msg)
 
 int	close_win(t_vars *vars)
 {
+	int	i;
+
+	i = -1;
 	write(1, "closing...\n", 11);
+	while (++i < 4)
+		free(vars->tile[i].img);
 	if (vars->mlx && vars->buffer && vars->buffer->img)
 		mlx_destroy_image(vars->mlx, vars->buffer->img);
 	if (vars->mlx && vars->win)
 		mlx_destroy_window(vars->mlx, vars->win);
-	free(vars->mlx);
+	if (vars->mlx)
+		free(vars->mlx);
 	vars->mlx = NULL;
 	free(vars->map);
 	vars->map = NULL;
@@ -56,8 +62,13 @@ int	close_display(t_vars *vars)
 
 int	close_win(t_vars *vars)
 {
+	int	i;
+
+	i = -1;
 	write(1, "closing...\n", 11);
 	mlx_loop_end(vars->mlx);
+	while (++i < 4)
+		free(vars->tile[i].img);
 	return (0);
 }
 
@@ -69,7 +80,8 @@ int	close_display(t_vars *vars)
 		mlx_destroy_window(vars->mlx, vars->win);
 	if (vars->mlx)
 		mlx_destroy_display(vars->mlx);
-	free(vars->mlx);
+	if (vars->mlx)
+		free(vars->mlx);
 	vars->mlx = NULL;
 	free(vars->map);
 	vars->map = NULL;

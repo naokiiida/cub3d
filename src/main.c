@@ -25,10 +25,11 @@ int	free_n_err(char *function_name, const char *msg, char **rgb)
 
 void	free_vars(t_vars *vars)
 {
-	free(vars->path[0]);
-	free(vars->path[1]);
-	free(vars->path[2]);
-	free(vars->path[3]);
+	int	i;
+
+	i = -1;
+	while (++i < 4)
+		free(vars->path[i]);
 	free(vars->player);
 	free(vars->texture);
 	free(vars->map);
@@ -55,6 +56,7 @@ int	main(int argc, char *argv[])
 	if (init(&vars) == EXIT_FAILURE)
 	{
 		free_vars(&vars);
+		close_win(&vars);
 		return (EXIT_FAILURE);
 	}
 	mlx_hook(vars.win, EVENT_KEY_PRESS, M_KEY_PRESS, &key_press, &vars);
