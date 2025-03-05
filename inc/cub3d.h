@@ -215,6 +215,7 @@ int				validate_file(char *file, const char *expect_ext);
 // /* These functions support map setup and validation */
 int				load_map(char *map_data, t_vars *vars);
 int				setup_map(char *map_data, t_vars *vars);
-int	free_n_err(char *function_name, const char *msg, char **rgb);
+int				free_n_err(char *function_name, const char *msg, char **rgb);
+void			free_vars(t_vars *vars);
 
 #endif

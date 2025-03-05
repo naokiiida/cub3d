@@ -27,16 +27,14 @@ int	main(int argc, char *argv[])
 	}
 	if (get_input(argv[1], &vars) == EXIT_FAILURE)
 	{
-		free(vars.path[0]);
-		free(vars.path[1]);
-		free(vars.path[2]);
-		free(vars.path[3]);
-		free(vars.player);
-		free(vars.texture);
+		free_vars(&vars);
 		return (EXIT_FAILURE);
 	}
 	if (init(&vars) == EXIT_FAILURE)
+	{
+		free_vars(&vars);
 		return (EXIT_FAILURE);
+	}
 	mlx_hook(vars.win, EVENT_KEY_PRESS, M_KEY_PRESS, &key_press, &vars);
 	mlx_hook(vars.win, EVENT_KEY_RELEASE, M_KEY_RELEASE, &key_release, &vars);
 	mlx_hook(vars.win, EVENT_KEY_EXIT, M_STRUCTURE_NOTIFY, &close_win, &vars);

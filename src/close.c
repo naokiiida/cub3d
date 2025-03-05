@@ -55,6 +55,8 @@ int	close_win(t_vars *vars)
 {
 	mlx_destroy_image(vars->mlx, vars->buffer->img);
 	mlx_destroy_window(vars->mlx, vars->win);
+	free(vars->map);
+	vars->map = NULL;
 	free(vars->mlx);
 	vars->mlx = NULL;
 	free(vars->ray);
@@ -86,5 +88,17 @@ int	free_n_err(char *function_name, const char *msg, char **rgb)
 	i = 0;
 	while (rgb[i])
 		free(rgb[i++]);
+	free(rgb);
 	return (err(function_name, msg));
+}
+
+void	free_vars(t_vars *vars)
+{
+	free(vars->path[0]);
+	free(vars->path[1]);
+	free(vars->path[2]);
+	free(vars->path[3]);
+	free(vars->player);
+	free(vars->texture);
+	free(vars->map);
 }
