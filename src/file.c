@@ -71,6 +71,7 @@ int	read_map_data(int fd, char **map_data)
 
 static int	initialize_vars(t_vars *vars)
 {
+	vars->map = NULL;
 	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
 	vars->player = (t_player *)calloc(1, sizeof(t_player));
 	vars->path[0] = NULL;
