@@ -15,10 +15,14 @@
 #include <limits.h>
 #include "cub3d.h"
 
-//__attribute__((destructor)) static void destructor()
-//{
-//	system("leaks -q a.out");
-//}
+// #ifdef LEAK_CHECK
+
+// __attribute__((destructor)) static void	destructor(void)
+// {
+// 	system("leaks -q cub3D");
+// }
+// #endif
+
 // static void	print_map(int **map, t_grid map_size);
 
 // static int	err(char *function_name, const char *msg)

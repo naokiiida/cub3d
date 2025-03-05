@@ -38,6 +38,8 @@ enum			e_x_masks
 	M_STRUCTURE_NOTIFY = 1L << 17,
 };
 
+# ifdef __APPLE__
+
 enum			e_keys
 {
 	KEY_ESC = 53,
@@ -49,6 +51,22 @@ enum			e_keys
 	KEY_LEFT = 123,
 	KEY_RIGHT = 124
 };
+
+# elif __LINUX__
+
+enum			e_keys
+{
+	KEY_ESC = 65307,
+	KEY_Q = 113,
+	KEY_W = 119,
+	KEY_A = 97,
+	KEY_S = 115,
+	KEY_D = 100,
+	KEY_LEFT = 65361,
+	KEY_RIGHT = 65363
+};
+
+# endif
 
 // # define TILE_SIZE 64
 // # define ROWS 24
