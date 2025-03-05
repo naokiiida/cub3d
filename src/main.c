@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:40:44 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/05 16:32:30 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 00:50:47 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	main(int argc, char *argv[])
 	}
 	if (init(&vars) == EXIT_FAILURE)
 	{
-		free_map(&vars);
 		close_win(&vars);
 		return (EXIT_FAILURE);
 	}
@@ -77,6 +76,5 @@ int	main(int argc, char *argv[])
 	mlx_hook(vars.win, EVENT_KEY_EXIT, M_STRUCTURE_NOTIFY, &close_win, &vars);
 	mlx_loop_hook(vars.mlx, &raycasting, &vars);
 	mlx_loop(vars.mlx);
-	close_display(&vars);
 	return (EXIT_SUCCESS);
 }
