@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:42:34 by niida             #+#    #+#             */
-/*   Updated: 2025/03/05 15:58:48 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/05 17:23:00 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -55,6 +55,8 @@ int	parse_rgb(int *color, char *input)
 	int		num;
 
 	rgb = ft_split(input, ',');
+	if (!rgb)
+		return (err("parse_rgb", "Failed Split of input rgb"));
 	if (count_strings(rgb) != 3)
 		return (err("parse_rgb", "Invalid RGB format"));
 	i = -1;
