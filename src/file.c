@@ -6,7 +6,7 @@
 /*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/03/05 15:59:28 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/05 17:09:36 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #define EXIT_FAILURE 1
@@ -73,6 +73,10 @@ static int	initialize_vars(t_vars *vars)
 {
 	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
 	vars->player = (t_player *)calloc(1, sizeof(t_player));
+	vars->path[0] = NULL;
+	vars->path[1] = NULL;
+	vars->path[2] = NULL;
+	vars->path[3] = NULL;
 	if (!vars->texture || !vars->player)
 		return (err("get_input", "Memory allocation failed"));
 	return (EXIT_SUCCESS);
