@@ -113,10 +113,10 @@ static int	init_map(int ***map, int rows, int cols)
 		(*map)[i] = malloc(sizeof(int) * cols);
 		if (!(*map)[i])
 		{
-			while (i > 0)
+			while (i >= 0)
 			{
-				free((*map)[--i]);
-				(*map)[i] = NULL;
+				free((*map)[i]);
+				(*map)[i--] = NULL;
 			}
 			free(*map);
 			*map = NULL;

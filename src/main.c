@@ -27,13 +27,14 @@ void	free_map(t_vars *vars)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	while (vars->map && ++i < vars->map_size.y)
 	{
 		free(vars->map[i]);
 		vars->map[i] = NULL;
 	}
 	free(vars->map);
+	vars->map = NULL;
 }
 
 void	free_vars(t_vars *vars)
@@ -45,8 +46,6 @@ void	free_vars(t_vars *vars)
 		free(vars->path[i]);
 	free(vars->player);
 	free(vars->texture);
-
-	vars->map = NULL;
 }
 
 // ゲームの初期化

@@ -33,7 +33,7 @@ int	close_win(t_vars *vars)
 	free_vars(vars);
 	while (++i < 4)
 		if (vars->tile[i].img)
-			free(vars->tile[i].img);
+			mlx_destroy_image(vars->mlx, vars->tile[i].img);
 	if (vars->mlx && vars->buffer && vars->buffer->img)
 		mlx_destroy_image(vars->mlx, vars->buffer->img);
 	if (vars->mlx && vars->win)
@@ -61,7 +61,7 @@ int	close_win(t_vars *vars)
 	free_vars(vars);
 	while (++i < 4)
 		if (vars->tile[i].img)
-			free(vars->tile[i].img);
+			mlx_destroy_image(vars->mlx, vars->tile[i].img);
 	if (vars->mlx && vars->buffer && vars->buffer->img)
 		mlx_destroy_image(vars->mlx, vars->buffer->img);
 	if (vars->mlx && vars->win)
