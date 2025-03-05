@@ -46,6 +46,7 @@ int	close_win(t_vars *vars)
 int	close_display(t_vars *vars)
 {
 	write(1, "closing...\n", 11);
+	free_map(vars);
 	if (vars->mlx)
 		free(vars->mlx);
 	return (0);
@@ -75,6 +76,7 @@ int	close_win(t_vars *vars)
 int	close_display(t_vars *vars)
 {
 	write(1, "closing...\n", 11);
+	free_map(vars);
 	if (vars->mlx)
 		mlx_destroy_display(vars->mlx);
 	if (vars->mlx)

@@ -235,5 +235,6 @@ int				load_map(char *map_data, t_vars *vars);
 int				setup_map(char *map_data, t_vars *vars);
 int				free_n_err(char *function_name, const char *msg, char **rgb);
 void			free_vars(t_vars *vars);
+void			free_map(t_vars *vars);
 
 #endif

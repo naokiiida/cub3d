@@ -23,6 +23,19 @@ int	free_n_err(char *function_name, const char *msg, char **rgb)
 	return (err(function_name, msg));
 }
 
+void	free_map(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	while (vars->map && ++i < vars->map_size.y)
+	{
+		free(vars->map[i]);
+		vars->map[i] = NULL;
+	}
+	free(vars->map);
+}
+
 void	free_vars(t_vars *vars)
 {
 	int	i;
@@ -32,12 +45,7 @@ void	free_vars(t_vars *vars)
 		free(vars->path[i]);
 	free(vars->player);
 	free(vars->texture);
-	while (vars->map && ++i < vars->map_size.y)
-	{
-		free(vars->map[i]);
-		vars->map[i] = NULL;
-	}
-	free(vars->map);
+
 	vars->map = NULL;
 }
 
@@ -61,6 +69,7 @@ int	main(int argc, char *argv[])
 	}
 	if (init(&vars) == EXIT_FAILURE)
 	{
+		free_map(&vars);
 		close_win(&vars);
 		return (EXIT_FAILURE);
 	}

@@ -136,6 +136,9 @@ int	setup_map(char *map_data, t_vars *vars)
 		return (EXIT_FAILURE);
 	fill_map(map_data, vars->map, vars);
 	if (floodfill(vars->map, vars) == EXIT_FAILURE)
+	{
+		free_map(vars);
 		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
