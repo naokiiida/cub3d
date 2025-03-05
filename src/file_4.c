@@ -114,8 +114,12 @@ static int	init_map(int ***map, int rows, int cols)
 		if (!(*map)[i])
 		{
 			while (i > 0)
+			{
 				free((*map)[--i]);
+				(*map)[i] = NULL;
+			}
 			free(*map);
+			*map = NULL;
 			return (err("init_map", "malloc failed for map columns"));
 		}
 		i++;
