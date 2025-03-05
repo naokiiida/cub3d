@@ -74,6 +74,8 @@ static int	initialize_vars(t_vars *vars)
 	vars->map = NULL;
 	vars->texture = (t_texture *)calloc(1, sizeof(t_texture));
 	vars->player = (t_player *)calloc(1, sizeof(t_player));
+	vars->ray = NULL;
+	vars->buffer = NULL;
 	vars->path[0] = NULL;
 	vars->path[1] = NULL;
 	vars->path[2] = NULL;

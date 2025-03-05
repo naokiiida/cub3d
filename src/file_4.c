@@ -129,23 +129,13 @@ static int	init_map(int ***map, int rows, int cols)
 
 int	setup_map(char *map_data, t_vars *vars)
 {
-	int	i;
-
 	if (load_map(map_data, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (init_map(&vars->map, vars->map_size.y, vars->map_size.x)
 		== EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	fill_map(map_data, vars->map, vars);
-	i = -1;
 	if (floodfill(vars->map, vars) == EXIT_FAILURE)
-	{
-		while (vars->map && ++i < vars->map_size.y)
-		{
-			free(vars->map[i]);
-			vars->map[i] = NULL;
-		}
 		return (EXIT_FAILURE);
-	}
 	return (EXIT_SUCCESS);
 }

@@ -32,7 +32,13 @@ void	free_vars(t_vars *vars)
 		free(vars->path[i]);
 	free(vars->player);
 	free(vars->texture);
+	while (vars->map && ++i < vars->map_size.y)
+	{
+		free(vars->map[i]);
+		vars->map[i] = NULL;
+	}
 	free(vars->map);
+	vars->map = NULL;
 }
 
 // ゲームの初期化
@@ -55,7 +61,6 @@ int	main(int argc, char *argv[])
 	}
 	if (init(&vars) == EXIT_FAILURE)
 	{
-		free_vars(&vars);
 		close_win(&vars);
 		return (EXIT_FAILURE);
 	}
