@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:40:44 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/02 03:57:17 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/05 16:32:30 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,13 @@ int	main(int argc, char *argv[])
 		return (0);
 	}
 	if (get_input(argv[1], &vars) == EXIT_FAILURE)
+	{
+		vars.player = NULL;
+		free(vars.texture);
+		vars.texture = NULL;
+		free(vars.buffer);
 		return (EXIT_FAILURE);
+	}
 	if (init(&vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	mlx_hook(vars.win, EVENT_KEY_PRESS, M_KEY_PRESS, &key_press, &vars);
