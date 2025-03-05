@@ -27,10 +27,12 @@ int	main(int argc, char *argv[])
 	}
 	if (get_input(argv[1], &vars) == EXIT_FAILURE)
 	{
-		vars.player = NULL;
+		free(vars.path[0]);
+		free(vars.path[1]);
+		free(vars.path[2]);
+		free(vars.path[3]);
+		free(vars.player);
 		free(vars.texture);
-		vars.texture = NULL;
-		free(vars.buffer);
 		return (EXIT_FAILURE);
 	}
 	if (init(&vars) == EXIT_FAILURE)

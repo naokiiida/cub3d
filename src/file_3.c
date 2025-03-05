@@ -83,5 +83,7 @@ int	handle_texture_path(char **kv, char **path_ptr)
 	if (validate_file(kv[1], ".xpm") == EXIT_FAILURE)
 		return (err("check_elements", "No .xpm extension found"));
 	*path_ptr = ft_strdup(kv[1]);
+	if (!path_ptr)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
