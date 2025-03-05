@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 23:14:03 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/05 13:29:45 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,4 +179,41 @@ void			calculate_perp_wall_dist(t_ray *ray);
 void			calculate_wall_size(t_ray *ray, t_texture *texture);
 void			decide_draw_texture(t_ray *ray, t_texture *texture);
 int				get_texture_x(t_ray *ray, t_player *player);
+/* File Processing - Main Public Functions */
+int				read_elements(int fd, t_vars *vars);
+int				get_input(char *file, t_vars *vars);
+
+/* Utility Functions */
+int				ft_atoi_mod(const char *str);
+int				ft_strcmp(const char *str1, const char *str2);
+
+// /* Internal Helpers - file.c */
+// /* These functions are only used within file.c */
+// int				initialize_vars(t_vars *vars);
+// int				process_map_data(int fd, char **map_data);
+// int				read_map_data(int fd, char **map_data);
+// int				skip_blank_lines(int fd, char **map_data);
+
+// /* Internal Helpers - file_1.c */
+// /* These functions support element parsing */
+// int				check_elements(char *line, t_texture *tex, char *path[4]);
+// void			free_string_array(char **arr);
+int				handle_texture_path(char **kv, char **path_ptr);
+// _Bool			is_all_elements_loaded(t_vars *vars);
+// int				process_key(int i, t_texture *tex, char *line);
+
+// /* Internal Helpers - file_2.c and file_3.c */
+// /* These functions support map and texture handling */
+// int				count_strings(char **arr);
+int				parse_rgb(int *color, char *input);
+// int				process_cell(char c, t_vars *vars, int *curr_cols);
+void			remove_trailing(char *line, char delim);
+// int				set_player(t_vars *vars, int x, int y, char c);
+int				validate_file(char *file, const char *expect_ext);
+
+// /* Internal Helpers - file_4.c */
+// /* These functions support map setup and validation */
+int				load_map(char *map_data, t_vars *vars);
+int				setup_map(char *map_data, t_vars *vars);
+
 #endif

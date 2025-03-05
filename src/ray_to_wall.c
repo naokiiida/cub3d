@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/23 19:54:48 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/05 15:59:21 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	calculate_perp_wall_dist(t_ray *ray)
 }
 
 // 描画する壁の大きさの判定
+// 画面ピクセルあたりのテクスチャ座標の増分を計算
 void	calculate_wall_size(t_ray *ray, t_texture *texture)
 {
 	int	line_height;
@@ -33,7 +34,6 @@ void	calculate_wall_size(t_ray *ray, t_texture *texture)
 	texture->draw_end = line_height / 2 + HEIGHT / 2;
 	if (texture->draw_end >= HEIGHT)
 		texture->draw_end = HEIGHT - 1;
-	// 画面ピクセルあたりのテクスチャ座標の増分を計算
 	texture->step = 1.0 * TEXTURE_HEIGHT / line_height;
 	texture->line_height = line_height;
 }

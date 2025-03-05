@@ -20,7 +20,7 @@ endif
 
 LIBFT := libft/
 GNL := get_next_line/
-SRCS := main.c init.c ray_init.c ray_to_wall.c raycast.c draw.c move.c vector.c close.c file.c
+SRCS := main.c init.c ray_init.c ray_to_wall.c raycast.c draw.c move.c vector.c close.c file.c file_1.c file_2.c file_3.c file_4.c
 # SRCS := file.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
