@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/05 13:29:45 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/05 17:45:43 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,5 +215,6 @@ int				validate_file(char *file, const char *expect_ext);
 // /* These functions support map setup and validation */
 int				load_map(char *map_data, t_vars *vars);
 int				setup_map(char *map_data, t_vars *vars);
+int	free_n_err(char *function_name, const char *msg, char **rgb);
 
 #endif
