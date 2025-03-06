@@ -3,25 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/02/25 21:06:59 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 19:25:06 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// 壁に当たったか判定
 static bool	is_hit_wall(int **map, t_grid grid)
 {
-	if (map[grid.x][grid.y] != MAP_BLANK)
+	if (map[grid.y][grid.x] != MAP_BLANK)
 		return (true);
 	return (false);
 }
 
-// DDAアルゴリズムによる壁の衝突判定
-// 現在地のrayの次の整数座標までの値を追加する
 void	perform_dda(t_ray *ray, int **map)
 {
 	while (!is_hit_wall(map, ray->grid))
@@ -41,15 +38,6 @@ void	perform_dda(t_ray *ray, int **map)
 	}
 }
 
-// フレームごとに描画を更新する関数
-// x方向にrayを飛ばす
-// rayの初期化
-// DDAによる壁の衝突判定
-// 壁までの距離を計算
-// 描画する壁の大きさの判定
-// 壁のテクスチャ判定
-// ヒットした壁のローカル座標を特定
-// 描画バッファに壁を描画
 int	raycasting(t_vars *vars)
 {
 	int	x;

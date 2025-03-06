@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ray_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/02 03:56:46 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 16:56:35 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// カメラ平面上の位置を計算するための正規化用変数の生成関数
 static double	calculate_camera_x(int x)
 {
 	double	camera_x;
@@ -21,7 +20,6 @@ static double	calculate_camera_x(int x)
 	return (camera_x);
 }
 
-// レイの移動量を計算する関数
 static t_vector2d	calculate_delta_dist(t_vector2d ray_dir)
 {
 	t_vector2d	delta_dist;
@@ -37,7 +35,6 @@ static t_vector2d	calculate_delta_dist(t_vector2d ray_dir)
 	return (delta_dist);
 }
 
-// rayの移動量の初期化と始めの整数座標までの値を求めray->side_distに代入
 static void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 {
 	if (ray->dir.x < 0)
@@ -64,7 +61,6 @@ static void	calculate_step_and_side_dist(t_ray *ray, t_player *player)
 	}
 }
 
-// rayの初期化
 void	init_ray(t_vars *vars, int x)
 {
 	double		camera_x;

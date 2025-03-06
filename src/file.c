@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 23:05:55 by niida             #+#    #+#             */
-/*   Updated: 2025/03/05 17:09:36 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 15:55:40 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#define EXIT_FAILURE 1
-#define EXIT_SUCCESS 0
+
 #include <errno.h>
 #include "cub3d.h"
 #include "get_next_line.h"
 #include "libft.h"
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
 
 int	skip_blank_lines(int fd, char **map_data)
 {

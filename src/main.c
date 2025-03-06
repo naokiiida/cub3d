@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:40:44 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/06 00:50:47 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 19:37:48 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,6 @@ void	free_vars(t_vars *vars)
 	free(vars->texture);
 }
 
-// ゲームの初期化
-// hookの設定　キー入力、キー解放、ウィンドウの閉じるボタン
-// フレームごとに呼び出される関数
-// loopの開始update
 int	main(int argc, char *argv[])
 {
 	t_vars	vars;
@@ -72,7 +68,6 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	}
 	mlx_hook(vars.win, EVENT_KEY_PRESS, M_KEY_PRESS, &key_press, &vars);
-	mlx_hook(vars.win, EVENT_KEY_RELEASE, M_KEY_RELEASE, &key_release, &vars);
 	mlx_hook(vars.win, EVENT_KEY_EXIT, M_STRUCTURE_NOTIFY, &close_win, &vars);
 	mlx_loop_hook(vars.mlx, &raycasting, &vars);
 	mlx_loop(vars.mlx);

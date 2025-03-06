@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ray_to_wall.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/05 15:59:21 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 19:31:13 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// 壁までの距離を計算
 void	calculate_perp_wall_dist(t_ray *ray)
 {
 	if (ray->side == X_AXIS)
@@ -21,8 +20,6 @@ void	calculate_perp_wall_dist(t_ray *ray)
 		ray->perp_wall_dist = ray->side_dist.y - ray->delta_dist.y;
 }
 
-// 描画する壁の大きさの判定
-// 画面ピクセルあたりのテクスチャ座標の増分を計算
 void	calculate_wall_size(t_ray *ray, t_texture *texture)
 {
 	int	line_height;
@@ -38,7 +35,6 @@ void	calculate_wall_size(t_ray *ray, t_texture *texture)
 	texture->line_height = line_height;
 }
 
-// 壁の東西南北のテクスチャの決定
 void	decide_draw_texture(t_ray *ray, t_texture *texture)
 {
 	if (ray->side == X_AXIS)
@@ -57,7 +53,6 @@ void	decide_draw_texture(t_ray *ray, t_texture *texture)
 	}
 }
 
-// ヒットしたx座標を特定
 static double	get_wall_x(t_ray *ray, t_player *player)
 {
 	double	wall_x;
@@ -67,12 +62,9 @@ static double	get_wall_x(t_ray *ray, t_player *player)
 	else
 		wall_x = (player->pos.x + ray->perp_wall_dist * ray->dir.x);
 	wall_x -= floor(wall_x);
-	assert(wall_x >= 0.0);
-	assert(wall_x <= 1.0);
 	return (wall_x);
 }
 
-// ヒットした壁のローカル座標を特定
 int	get_texture_x(t_ray *ray, t_player *player)
 {
 	int		tex_x;

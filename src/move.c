@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 00:35:01 by niida             #+#    #+#             */
-/*   Updated: 2025/02/25 22:49:57 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 19:33:17 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "cub3d.h"
 
 /**
@@ -22,10 +23,10 @@ void	move_player(int **map, t_player *p, int dir, t_vector2d v)
 
 	movement = vector_scale(v, p->move_speed * dir);
 	next_pos = vector_add(p->pos, movement);
-	if (!map[(int)next_pos.x][(int)p->pos.y])
-		p->pos.x = next_pos.x;
-	if (!map[(int)p->pos.x][(int)next_pos.y])
+	if (!map[(int)next_pos.y][(int)p->pos.x])
 		p->pos.y = next_pos.y;
+	if (!map[(int)p->pos.y][(int)next_pos.x])
+		p->pos.x = next_pos.x;
 }
 
 void	key_rotate(t_player *p, int direction)
@@ -58,12 +59,12 @@ int	key_press(int key, t_vars *vars)
 	return (0);
 }
 
-int	key_release(int key, t_vars *vars)
-{
-	printf("key release: %d\n", key);
-	if (vars->win == NULL)
-		return (1);
-	if (key == KEY_Q)
-		close_win(vars);
-	return (0);
-}
+// int	key_release(int key, t_vars *vars)
+// {
+// 	printf("key release: %d\n", key);
+// 	if (vars->win == NULL)
+// 		return (1);
+// 	if (key == KEY_Q)
+// 		close_win(vars);
+// 	return (0);
+// }

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:36:24 by niida             #+#    #+#             */
-/*   Updated: 2025/02/25 23:00:52 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 16:56:48 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// タイルのピクセルデータを取得する関数
 unsigned int	get_tile_color(t_img *tile, int x, int y)
 {
 	char	*dst;
@@ -21,7 +20,6 @@ unsigned int	get_tile_color(t_img *tile, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-// 指定したピクセル位置に色を設定する関数
 void	buffer_mlx_pixel_put(t_img *buffer, int x, int y, int color)
 {
 	char	*dst;
@@ -33,10 +31,6 @@ void	buffer_mlx_pixel_put(t_img *buffer, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-/**
- * 描画バッファに壁を描画
- * tex_pos: 描画するタイルのy座標を更新
-*/
 void	draw_buffer(t_vars *vars, int x)
 {
 	int				tex_y;
@@ -63,7 +57,6 @@ void	draw_buffer(t_vars *vars, int x)
 		buffer_mlx_pixel_put(vars->buffer, x, i++, tex->floor_color);
 }
 
-// 描画バッファを画面に描画
 void	draw(t_vars *vars)
 {
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->buffer->img, 0, 0);

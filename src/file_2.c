@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   file_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:42:34 by niida             #+#    #+#             */
-/*   Updated: 2025/03/05 13:22:36 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 19:31:32 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <errno.h>
 #include <stdbool.h>
 #include <string.h>
@@ -112,7 +113,7 @@ static int	process_cell(char c, t_vars *vars, int *curr_cols)
 	}
 	else if (ft_strchr("NSWE", c))
 	{
-		if (set_player(vars, vars->map_size.y, *curr_cols, c) == EXIT_FAILURE)
+		if (set_player(vars, *curr_cols, vars->map_size.y, c) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		(*curr_cols)++;
 	}

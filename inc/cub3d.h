@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/06 00:52:06 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 19:37:49 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,7 @@ void			draw_buffer(t_vars *vars, int x);
 void			draw(t_vars *vars);
 int				close_win(t_vars *vars);
 int				key_press(int key, t_vars *vars);
-int				key_release(int key, t_vars *vars);
 void			buffer_mlx_pixel_put(t_img *buffer, int x, int y, int color);
-void			draw_map(t_vars *vars);
 t_vector2d		vector_add(t_vector2d v1, t_vector2d v2);
 t_vector2d		vector_scale(t_vector2d v, double scale);
 t_vector2d		vector_rotate(t_vector2d v, double angle);

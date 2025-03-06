@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:36:14 by niida             #+#    #+#             */
-/*   Updated: 2025/02/25 23:37:54 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 16:56:00 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static int	load_images(t_vars *vars)
 		status = load_image(vars, &vars->tile[k], vars->path[k]);
 		if (status == EXIT_FAILURE)
 		{
-			while (--k >= 0)
-				mlx_destroy_image(vars->mlx, vars->tile[k].img);
-			return (err("load_images", "failed to load images"));
+			while (k > 0)
+				mlx_destroy_image(vars->mlx, vars->tile[--k].img);
+			return (err("load_images", "failed tile"));
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -68,7 +68,10 @@ static int	cleanup(t_vars *vars, char *func, const char *msg)
 	if (vars->win)
 		mlx_destroy_window(vars->mlx, vars->win);
 	if (vars->mlx)
+	{
 		free(vars->mlx);
+		vars->mlx = NULL;
+	}
 	return (err(func, msg));
 }
 
@@ -81,6 +84,7 @@ int	init(t_vars *vars)
 	if (!vars->win)
 	{
 		free(vars->mlx);
+		vars->mlx = NULL;
 		return (err("init", "failed mlx_new_window"));
 	}
 	vars->ray = (t_ray *)calloc(1, sizeof(t_ray));

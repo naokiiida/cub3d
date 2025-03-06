@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   close.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:38:44 by niida             #+#    #+#             */
-/*   Updated: 2025/03/06 01:12:52 by niida            ###   ########.fr       */
+/*   Updated: 2025/03/06 16:53:29 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "cub3d.h"
 #include "libft.h"
 
@@ -30,6 +31,7 @@ int	close_win(t_vars *vars)
 	int	i;
 
 	i = -1;
+	printf("init\n");
 	free_vars(vars);
 	free(vars->ray);
 	free_map(vars);
