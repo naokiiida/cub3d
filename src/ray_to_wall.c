@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/06 19:31:13 by sasano           ###   ########.fr       */
+/*   Updated: 2025/03/14 17:39:25 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,18 @@ void	calculate_wall_size(t_ray *ray, t_texture *texture)
 	texture->line_height = line_height;
 }
 
-void	decide_draw_texture(t_ray *ray, t_texture *texture)
+void	decide_draw_texture(t_ray *ray, t_texture *texture, t_player *player)
 {
 	if (ray->side == X_AXIS)
 	{
-		if (ray->dir.x < 0)
+		if (player->pos.x < ray->grid.x)
 			texture->id = WEST_WALL;
 		else
 			texture->id = EAST_WALL;
 	}
 	else
 	{
-		if (ray->dir.y < 0)
+		if (player->pos.y < ray->grid.y)
 			texture->id = NORTH_WALL;
 		else
 			texture->id = SOUTH_WALL;

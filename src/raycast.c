@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:53:00 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/06 19:25:06 by sasano           ###   ########.fr       */
+/*   Updated: 2025/03/14 17:31:03 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	raycasting(t_vars *vars)
 		perform_dda(vars->ray, vars->map);
 		calculate_perp_wall_dist(vars->ray);
 		calculate_wall_size(vars->ray, vars->texture);
-		decide_draw_texture(vars->ray, vars->texture);
+		decide_draw_texture(vars->ray, vars->texture, vars->player);
 		vars->texture->tex_x = get_texture_x(vars->ray, vars->player);
 		draw_buffer(vars, x);
 	}
