@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/03 21:47:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/03/14 17:31:30 by sasano           ###   ########.fr       */
+/*   Created: 2025/02/03 21:47:57 by sasano            #+#    #+#             */
+/*   Updated: 2025/03/31 12:39:39 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,8 @@ t_vector2d		vector_rotate(t_vector2d v, double angle);
 void			init_ray(t_vars *vars, int x);
 void			calculate_perp_wall_dist(t_ray *ray);
 void			calculate_wall_size(t_ray *ray, t_texture *texture);
-void			decide_draw_texture(t_ray *ray, t_texture *texture, t_player *player);
+void			decide_draw_texture(t_ray *ray, t_texture *texture,
+					t_player *player);
 int				get_texture_x(t_ray *ray, t_player *player);
 int				read_elements(int fd, t_vars *vars);
 int				get_input(char *file, t_vars *vars);
