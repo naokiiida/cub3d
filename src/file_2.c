@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 12:42:34 by niida             #+#    #+#             */
-/*   Updated: 2025/03/06 19:31:32 by sasano           ###   ########.fr       */
+/*   Created: 2025/03/05 12:42:34 by sasano            #+#    #+#             */
+/*   Updated: 2025/03/31 12:49:22 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	set_player(t_vars *vars, int x, int y, char c)
 	idx = ft_strchr("NSWE", c) - "NSWE";
 	p->dir = dirs[idx];
 	p->plane = planes[idx];
-	p->pos = (t_vector2d){x, y};
+	p->pos = (t_vector2d){x + 0.5, y + 0.5};
 	p->move_speed = 0.05;
 	p->rot_speed = 0.05;
 	return (EXIT_SUCCESS);
