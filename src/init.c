@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 18:36:14 by niida             #+#    #+#             */
-/*   Updated: 2025/03/06 16:56:00 by sasano           ###   ########.fr       */
+/*   Created: 2025/02/10 18:36:14 by sasano            #+#    #+#             */
+/*   Updated: 2025/03/31 15:44:26 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int	init_buffer(t_vars *vars)
 	if (!vars->buffer->img)
 	{
 		free(vars->buffer);
+		vars->buffer = NULL;
 		return (err("init_buffer", "failed mlx_new_image"));
 	}
 	vars->buffer->addr = mlx_get_data_addr(vars->buffer->img,
